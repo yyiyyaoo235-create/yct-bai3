@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 3 · 他是谁? — Thẻ hồ sơ Thám Tử Nhí</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --navy:#1B3358;
+  --ink:#2A3752;
+  --cream:#FFF7E6;
+  --cream2:#FFEFCB;
+  --paper:#FFFDF8;
+  --line:#E7D4A1;
+  --sky:#2E9BF0;
+  --sky-dark:#1C7DD1;
+  --sun:#FFC93C;
+  --sun-dark:#F0AC00;
+  --coral:#FF6F59;
+  --coral-dark:#E5503C;
+  --leaf:#33C98D;
+  --leaf-dark:#1FA873;
+  --purple:#8B6FE0;
+  --radius:22px;
+  --shadow: 0 10px 0 rgba(27,51,88,.08), 0 16px 30px rgba(27,51,88,.14);
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:'Quicksand',sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 8px 8px, rgba(27,51,88,.05) 2px, transparent 2.4px) 0 0/26px 26px,
+    linear-gradient(180deg, var(--cream) 0%, var(--cream2) 100%);
+  min-height:100%;
+}
+.han{ font-family:"STKaiti","Kaiti SC","KaiTi","DFKai-SB","BiauKai","Kaiti TC",serif; }
+h1,h2,h3,.display{ font-family:'Fredoka',sans-serif; }
+button{ font-family:'Quicksand',sans-serif; cursor:pointer; }
+img{ max-width:100%; display:block; }
+:focus-visible{ outline:3px solid var(--sky-dark); outline-offset:3px; }
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}
+
+/* ============ APP SHELL ============ */
+.app{ max-width:1000px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; }
+
+.topbar{
+  position:sticky; top:0; z-index:30;
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 16px;
+  background:var(--navy);
+  color:#fff;
+  box-shadow:0 4px 14px rgba(27,51,88,.25);
+}
+.topbar .title{ display:flex; align-items:center; gap:10px; min-width:0; }
+.topbar .title .lesson-tag{
+  background:var(--sun); color:var(--navy); font-weight:700; font-family:'Fredoka',sans-serif;
+  padding:4px 10px; border-radius:999px; font-size:.8rem; white-space:nowrap;
+}
+.topbar .title h1{ font-size:1rem; margin:0; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.clue-badge{
+  display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.14);
+  padding:6px 12px; border-radius:999px; font-weight:700; font-family:'Fredoka',sans-serif; font-size:.85rem;
+  white-space:nowrap;
+}
+.menu-btn{
+  border:none; background:var(--coral); color:#fff; width:42px; height:42px; border-radius:14px;
+  font-size:1.2rem; box-shadow:0 4px 0 var(--coral-dark); flex:none;
+}
+.menu-btn:active{ transform:translateY(3px); box-shadow:0 1px 0 var(--coral-dark); }
+
+/* ============ SLIDES ============ */
+.stage{ flex:1; position:relative; padding:26px 16px 20px; }
+.slide{ display:none; animation:fadeUp .35s ease; }
+.slide.active{ display:block; }
+@keyframes fadeUp{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  background:#fff; border:2px dashed var(--line); color:var(--coral-dark);
+  font-family:'Fredoka',sans-serif; font-weight:600; font-size:.85rem;
+  padding:6px 14px; border-radius:999px; margin-bottom:10px;
+}
+.slide h2.display{
+  font-size:clamp(1.5rem,4.4vw,2.3rem); color:var(--navy); margin:0 0 6px;
+}
+.slide p.lead{ font-size:1.05rem; color:var(--ink); opacity:.85; margin:0 0 20px; max-width:640px; }
+
+/* card base with pinned-paper feel */
+.card{
+  position:relative; background:var(--paper); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:22px; border:1px solid rgba(27,51,88,.06);
+}
+.tape{
+  position:absolute; top:-12px; left:50%; transform:translateX(-50%) rotate(-3deg);
+  width:74px; height:22px; background:rgba(255,201,60,.85);
+  border:1px solid rgba(0,0,0,.03); box-shadow:0 2px 4px rgba(0,0,0,.08);
+}
+.note{
+  background:#FFF4B8; border-radius:10px; padding:12px 14px; box-shadow:0 4px 10px rgba(0,0,0,.08);
+  transform:rotate(-1.4deg); font-size:.92rem; line-height:1.45; max-width:420px;
+  border:1px solid rgba(0,0,0,.04);
+}
+.note b{ color:var(--coral-dark); }
+
+/* photo placeholder */
+.photo-slot{
+  position:relative; width:100%; aspect-ratio:4/3; border-radius:16px; overflow:hidden;
+  background:repeating-linear-gradient(135deg, #EFE3C2, #EFE3C2 10px, #F7EFDA 10px, #F7EFDA 20px);
+  border:2px dashed var(--line); display:flex; align-items:center; justify-content:center;
+}
+.photo-slot img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.photo-slot .hint-text{
+  position:relative; z-index:1; text-align:center; padding:10px; font-size:.85rem; color:#8a7550; font-weight:600;
+}
+.photo-slot.round{ aspect-ratio:1/1; border-radius:50%; }
+
+.audio-btn{
+  border:none; background:var(--sky); color:#fff; font-family:'Fredoka',sans-serif; font-weight:600;
+  padding:9px 16px; border-radius:999px; box-shadow:0 4px 0 var(--sky-dark); font-size:.9rem;
+}
+.audio-btn:active{ transform:translateY(3px); box-shadow:0 1px 0 var(--sky-dark); }
+
+/* ============ COVER (slide 0) ============ */
+.cover{ text-align:center; padding-top:6px; }
+.cover .badge-hero{
+  width:min(320px,80vw); margin:0 auto 14px; aspect-ratio:1/1; border-radius:50%;
+  background:repeating-linear-gradient(135deg, #EFE3C2, #EFE3C2 10px, #F7EFDA 10px, #F7EFDA 20px);
+  border:4px dashed var(--coral); display:flex; align-items:center; justify-content:center; position:relative;
+  box-shadow:var(--shadow);
+}
+.cover .badge-hero img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.cover .badge-hero .hint-text{ position:relative; z-index:1; padding:16px; font-weight:700; color:#8a7550; }
+.cover h1.display{ font-size:clamp(1.8rem,6vw,3rem); color:var(--navy); margin:8px 0 4px; }
+.cover .han-title{ font-size:clamp(2.4rem,9vw,3.6rem); color:var(--coral-dark); margin:6px 0; }
+.cover .sub{ font-size:1.1rem; color:var(--ink); opacity:.8; margin-bottom:22px; }
+.big-cta{
+  border:none; background:var(--leaf); color:#fff; font-family:'Fredoka',sans-serif; font-weight:700;
+  font-size:1.15rem; padding:16px 34px; border-radius:999px; box-shadow:0 6px 0 var(--leaf-dark);
+}
+.big-cta:active{ transform:translateY(4px); box-shadow:0 2px 0 var(--leaf-dark); }
+.flags-row{ display:flex; gap:10px; justify-content:center; margin-top:18px; font-size:1.6rem; }
+
+/* ============ KEY SENTENCES ============ */
+.sentence-card{
+  display:flex; align-items:center; gap:18px; margin-bottom:16px; flex-wrap:wrap;
+}
+.sentence-card .han{ font-size:clamp(1.8rem,5vw,2.6rem); color:var(--navy); }
+.sentence-card .pinyin{ color:var(--sky-dark); font-weight:700; font-size:1.05rem; }
+.sentence-card .meaning{ font-size:.98rem; opacity:.8; }
+.sentence-card .txt{ flex:1; min-width:220px; }
+
+/* ============ VOCAB FLIP CARDS ============ */
+.grid-cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:18px; margin-top:6px; }
+.idcard{ perspective:1200px; height:270px; }
+.idcard-inner{
+  position:relative; width:100%; height:100%; transition:transform .6s cubic-bezier(.4,.2,.2,1);
+  transform-style:preserve-3d;
+}
+.idcard.flipped .idcard-inner{ transform:rotateY(180deg); }
+.idcard-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:18px;
+  background:var(--paper); box-shadow:var(--shadow); border:1px solid rgba(27,51,88,.06);
+  padding:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:6px;
+  cursor:pointer;
+}
+.idcard-back{ transform:rotateY(180deg); justify-content:flex-start; padding-top:12px; gap:8px; }
+.idcard .han.big{ font-size:2.6rem; color:var(--navy); line-height:1; }
+.idcard .pinyin{ color:var(--sky-dark); font-weight:700; }
+.idcard .tap-hint{ margin-top:auto; font-size:.78rem; color:var(--coral-dark); opacity:.8; }
+.idcard .photo-slot{ height:100px; aspect-ratio:auto; }
+.idcard .meaning{ font-weight:700; color:var(--navy); }
+.idcard .stamp{
+  position:absolute; top:8px; right:8px; width:52px; height:52px; border-radius:50%;
+  border:3px dashed var(--leaf-dark); color:var(--leaf-dark); font-family:'Fredoka',sans-serif;
+  display:flex; align-items:center; justify-content:center; font-size:.62rem; font-weight:700;
+  transform:rotate(-14deg); text-align:center; line-height:1.1; background:rgba(255,255,255,.7); z-index:2;
+}
+.idcard-front .tape{ top:-10px; }
+
+/* ============ GAME (shout/whisper) ============ */
+.game-hero{ display:flex; gap:20px; align-items:center; flex-wrap:wrap; }
+.game-hero .icon-circle{
+  width:110px; height:110px; border-radius:50%; background:var(--sun); flex:none;
+  display:flex; align-items:center; justify-content:center; font-size:2.6rem; box-shadow:var(--shadow);
+}
+.step-list{ list-style:none; margin:16px 0 0; padding:0; display:grid; gap:10px; }
+.step-list li{
+  background:#fff; border-radius:14px; padding:12px 16px; box-shadow:0 3px 10px rgba(27,51,88,.08);
+  display:flex; gap:10px; align-items:flex-start; border-left:6px solid var(--sky);
+}
+.step-list li b{ color:var(--navy); }
+
+/* ============ DIALOGUE / STORY panels ============ */
+.panel{
+  display:flex; gap:14px; align-items:flex-start; margin-bottom:18px; flex-wrap:wrap;
+}
+.panel.right{ flex-direction:row-reverse; }
+.panel .avatar{ width:92px; flex:none; }
+.panel .avatar .photo-slot{ aspect-ratio:1/1; border-radius:50%; }
+.bubble{
+  position:relative; background:#fff; border-radius:18px; padding:14px 18px; box-shadow:0 4px 12px rgba(27,51,88,.1);
+  flex:1; min-width:200px; border:2px solid var(--line);
+}
+.panel.right .bubble{ border-color:#CDE8FF; }
+.bubble .han{ font-size:1.5rem; color:var(--navy); }
+.bubble .pinyin{ color:var(--sky-dark); font-weight:700; font-size:.92rem; }
+.bubble .meaning{ font-size:.85rem; opacity:.75; margin-top:2px; }
+.bubble .audio-btn{ margin-top:8px; padding:6px 12px; font-size:.78rem; }
+.panel-num{
+  display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%;
+  background:var(--coral); color:#fff; font-family:'Fredoka',sans-serif; font-weight:700; margin-bottom:10px; font-size:.85rem;
+}
+
+/* ============ GUESS GAME ============ */
+.guess-card{
+  background:var(--paper); border-radius:18px; box-shadow:var(--shadow); padding:14px; text-align:center;
+}
+.guess-card .photo-slot{ margin-bottom:10px; }
+.guess-card .mystery{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-family:'Fredoka',sans-serif; font-size:2.2rem; color:var(--coral); background:rgba(255,247,230,.55); z-index:2;
+  transition:opacity .3s;
+}
+.guess-card.revealed .mystery{ opacity:0; pointer-events:none; }
+.guess-card .prompt{ font-size:.85rem; color:var(--navy); font-weight:700; margin:6px 0; }
+.guess-card input{
+  width:100%; padding:8px 10px; border-radius:10px; border:2px solid var(--line); font-family:'Quicksand',sans-serif;
+  font-size:.9rem; margin-bottom:8px;
+}
+.close-btn{
+  border:none; background:var(--purple); color:#fff; font-family:'Fredoka',sans-serif; font-weight:600;
+  padding:8px 14px; border-radius:999px; font-size:.82rem; box-shadow:0 3px 0 #6b52b3;
+}
+.close-btn:active{ transform:translateY(3px); box-shadow:none; }
+.guess-card .closed-stamp{
+  display:none; margin-top:6px; color:var(--coral-dark); font-family:'Fredoka',sans-serif; font-weight:700;
+  border:2px dashed var(--coral); border-radius:8px; padding:4px; transform:rotate(-3deg); font-size:.78rem;
+}
+.guess-card.closed .closed-stamp{ display:block; }
+
+/* ============ SONG ============ */
+.song-card{ text-align:center; }
+.song-card .music-hero{
+  width:150px; height:150px; margin:0 auto 14px; border-radius:50%; background:var(--sky);
+  display:flex; align-items:center; justify-content:center; font-size:3rem; box-shadow:var(--shadow); color:#fff;
+}
+.gesture-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-top:16px; }
+.gesture-row .g{ background:#fff; border-radius:14px; padding:14px; box-shadow:0 3px 10px rgba(27,51,88,.08); }
+.gesture-row .g .em{ font-size:1.8rem; }
+.chip{
+  display:inline-flex; align-items:center; gap:6px; background:var(--cream2); border:2px solid var(--sun);
+  border-radius:999px; padding:6px 14px; font-weight:700; color:var(--navy); margin-top:14px;
+}
+
+/* ============ TEST ============ */
+.test-block{ margin-bottom:26px; }
+.test-block h3{ color:var(--navy); font-size:1.2rem; margin:0 0 6px; }
+.q-wrap{ background:#fff; border-radius:16px; padding:16px; box-shadow:0 3px 10px rgba(27,51,88,.08); margin-bottom:14px; }
+.q-title{ font-weight:700; color:var(--navy); margin-bottom:10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.opt-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:10px; }
+.opt{ border:3px solid var(--line); border-radius:14px; padding:6px; background:var(--paper); text-align:center; }
+.opt .photo-slot{ aspect-ratio:1/1; border-radius:10px; }
+.opt .lab{ font-family:'Fredoka',sans-serif; font-weight:700; color:var(--navy); padding:4px; }
+.opt.selected{ border-color:var(--sky); box-shadow:0 0 0 3px rgba(46,155,240,.25); }
+.opt.correct-mark{ border-color:var(--leaf-dark); box-shadow:0 0 0 3px rgba(51,201,141,.3); }
+.reveal-btn, .again-btn{
+  border:none; background:var(--sun); color:var(--navy); font-family:'Fredoka',sans-serif; font-weight:700;
+  padding:8px 16px; border-radius:999px; font-size:.85rem; box-shadow:0 3px 0 var(--sun-dark); margin-top:8px;
+}
+.reveal-btn:active,.again-btn:active{ transform:translateY(3px); box-shadow:none; }
+
+.tf-row{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.tf-row .photo-slot{ width:90px; height:90px; aspect-ratio:auto; border-radius:12px; flex:none; }
+.tf-row .han{ font-size:1.6rem; color:var(--navy); }
+.tf-btns{ display:flex; gap:8px; margin-left:auto; }
+.tf-btn{
+  border:2px solid var(--line); background:#fff; border-radius:12px; padding:8px 14px; font-weight:700;
+  font-family:'Fredoka',sans-serif; font-size:.85rem;
+}
+.tf-btn.correct{ background:var(--leaf); color:#fff; border-color:var(--leaf-dark); }
+.tf-btn.wrong{ background:var(--coral); color:#fff; border-color:var(--coral-dark); }
+.tf-btn[disabled]{ opacity:.55; }
+.score-line{ font-family:'Fredoka',sans-serif; color:var(--navy); font-weight:700; margin-top:6px; }
+
+/* ============ WRAP UP ============ */
+.cert{
+  background:var(--paper); border:4px dashed var(--coral); border-radius:24px; padding:26px; text-align:center;
+  box-shadow:var(--shadow); position:relative; overflow:hidden;
+}
+.cert h2{ color:var(--navy); margin:6px 0; }
+.cert input.name{
+  font-family:'Fredoka',sans-serif; font-size:1.2rem; text-align:center; border:none; border-bottom:3px dashed var(--sky);
+  background:transparent; padding:6px 10px; width:min(320px,80%); color:var(--coral-dark); margin:10px 0 16px;
+}
+.checklist{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; text-align:left; margin:16px 0; }
+.checklist .ci{ background:#fff; border-radius:10px; padding:8px 10px; display:flex; align-items:center; gap:8px; font-weight:700; color:var(--navy); font-size:.88rem; }
+.checklist .ci .han{ font-size:1.1rem; }
+.medal{ font-size:3.4rem; }
+
+/* ============ NAVBAR ============ */
+.navbar{
+  position:sticky; bottom:0; z-index:30; background:var(--navy); color:#fff;
+  display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 14px;
+  box-shadow:0 -4px 14px rgba(27,51,88,.25);
+}
+.nav-btn{
+  border:none; border-radius:14px; padding:10px 16px; font-family:'Fredoka',sans-serif; font-weight:600;
+  font-size:.9rem; display:flex; align-items:center; gap:6px;
+}
+.nav-btn.prev{ background:rgba(255,255,255,.14); color:#fff; }
+.nav-btn.next{ background:var(--coral); color:#fff; box-shadow:0 4px 0 var(--coral-dark); }
+.nav-btn.next:active{ transform:translateY(3px); box-shadow:none; }
+.nav-btn:disabled{ opacity:.35; }
+.nav-mid{ text-align:center; font-size:.78rem; opacity:.85; flex:1; }
+.dots{ display:flex; gap:5px; justify-content:center; margin-top:4px; }
+.dots span{ width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.3); }
+.dots span.on{ background:var(--sun); }
+
+/* ============ MENU OVERLAY ============ */
+.overlay{
+  position:fixed; inset:0; background:rgba(27,51,88,.55); backdrop-filter:blur(2px);
+  display:flex; align-items:center; justify-content:center; z-index:50; padding:20px; opacity:0; pointer-events:none;
+  transition:opacity .25s;
+}
+.overlay.open{ opacity:1; pointer-events:auto; }
+.overlay-card{
+  background:var(--cream); border-radius:24px; padding:20px; max-width:560px; width:100%; max-height:82vh; overflow:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+.overlay-card h3{ margin:0 0 12px; color:var(--navy); display:flex; justify-content:space-between; align-items:center; }
+.overlay-card .close-x{ border:none; background:var(--coral); color:#fff; width:34px; height:34px; border-radius:50%; font-size:1rem; }
+.menu-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+.menu-grid button{
+  border:2px solid var(--line); background:#fff; border-radius:14px; padding:12px; text-align:left;
+  font-family:'Fredoka',sans-serif; font-weight:600; color:var(--navy); display:flex; gap:8px; align-items:center; font-size:.88rem;
+}
+.menu-grid button.current{ border-color:var(--sky); background:#EAF5FF; }
+
+/* toast */
+.toast{
+  position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(20px); z-index:60;
+  background:var(--navy); color:#fff; padding:10px 18px; border-radius:999px; font-size:.85rem; opacity:0;
+  transition:all .25s; pointer-events:none; max-width:88vw; text-align:center;
+}
+.toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* confetti */
+.confetti-piece{ position:fixed; top:-30px; font-size:1.4rem; z-index:40; animation:fall linear forwards; }
+@keyframes fall{ to{ transform:translateY(105vh) rotate(300deg); opacity:.2; } }
+
+@media (max-width:520px){
+  .panel.right{ flex-direction:row; }
+  .nav-mid{ display:none; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ TOPBAR ============ -->
+  <div class="topbar">
+    <div class="title">
+      <span class="lesson-tag">Bài 3</span>
+      <h1>他是谁? · Thẻ hồ sơ Thám Tử Nhí</h1>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div class="clue-badge">🔍 <span id="clueCount">0</span>/<span id="clueTotal">16</span></div>
+      <button class="menu-btn" onclick="openMenu()" aria-label="Mở menu bài học">☰</button>
+    </div>
+  </div>
+
+  <!-- ============ STAGE ============ -->
+  <div class="stage">
+
+    <!-- SLIDE 0 — BÌA -->
+    <section class="slide active" id="slide-0" data-title="Bìa · Nhận nhiệm vụ" data-icon="🔍">
+      <div class="cover">
+        <div class="badge-hero">
+          <!-- Gợi ý ảnh: cậu bé đeo kính lúp/mũ thám tử, đứng cạnh bảng ghim nhiều ảnh chân dung -->
+          <img src="bia-tham-tu.png" alt="Thám tử nhí" onerror="this.style.display='none'">
+          <span class="hint-text">🖼️ Ảnh: cậu bé đội mũ thám tử, cầm kính lúp, đứng trước bảng ghim ảnh</span>
+        </div>
+        <div class="eyebrow">🕵️ Nhiệm vụ hôm nay</div>
+        <h1 class="display">他是谁?</h1>
+        <div class="han-title han">他是谁？</div>
+        <div class="sub">Tā shì shéi? — Anh ấy là ai? Bé sẽ trở thành thám tử nhí, đi hỏi xem mọi người là ai và đến từ nước nào nhé!</div>
+        <button class="big-cta" onclick="goTo(1)">🔍 Bắt đầu khám phá</button>
+        <div class="flags-row">🎒 🧭 📇 🎉</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 1 — CÂU MẪU -->
+    <section class="slide" id="slide-1" data-title="Câu mẫu" data-icon="💬">
+      <div class="eyebrow">💬 Câu chìa khoá</div>
+      <h2 class="display">Học 2 câu hỏi bí mật</h2>
+      <p class="lead">Đây là 2 câu "thần chú" mà thám tử nào cũng phải thuộc để đi tìm hiểu về người khác.</p>
+
+      <div class="card" style="margin-bottom:16px;">
+        <span class="tape"></span>
+        <div class="sentence-card">
+          <div class="txt">
+            <div class="han">他是谁？</div>
+            <div class="pinyin">Tā shì shéi?</div>
+            <div class="meaning">Anh ấy là ai?</div>
+          </div>
+          <button class="audio-btn" onclick="playAudio('cau-mau-1.mp3')">🔊 Nghe</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="tape"></span>
+        <div class="sentence-card">
+          <div class="txt">
+            <div class="han">成龙是哪国人？</div>
+            <div class="pinyin">Chéng Lóng shì nǎ guó rén?</div>
+            <div class="meaning">Thành Long là người nước nào?</div>
+          </div>
+          <button class="audio-btn" onclick="playAudio('cau-mau-2.mp3')">🔊 Nghe</button>
+        </div>
+        <div style="margin-top:14px;">
+          <div class="photo-slot" style="max-width:260px;">
+            <img src="thanh-long.png" alt="Thành Long" onerror="this.style.display='none'">
+            <span class="hint-text">🖼️ Ảnh: diễn viên Thành Long (tượng sáp) để minh hoạ câu hỏi</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top:16px;">📌 <b>Ghi chú cho GV:</b> Cho bé nghe 2 lần rồi hỏi-đáp trực tiếp, không dịch từng chữ. Có thể chỉ vào chính mình/thú bông để hỏi mẫu trước.</div>
+    </section>
+
+    <!-- SLIDE 2 — TỪ MỚI -->
+    <section class="slide" id="slide-2" data-title="Từ mới" data-icon="📇">
+      <div class="eyebrow">📇 Hồ sơ từ vựng</div>
+      <h2 class="display">Chạm vào từng thẻ để mở hồ sơ!</h2>
+      <p class="lead">Mỗi thẻ là một "manh mối" — chạm vào để lật thẻ và khám phá nghĩa của từ.</p>
+      <div class="grid-cards" id="vocabGrid"></div>
+    </section>
+
+    <!-- SLIDE 3 — TRÒ CHƠI HÉT THẦM -->
+    <section class="slide" id="slide-3" data-title="Trò chơi luyện âm" data-icon="🎧">
+      <div class="eyebrow">🎧 Nhiệm vụ luyện tai</div>
+      <h2 class="display">Trò chơi: Hét — Thầm</h2>
+      <div class="card">
+        <div class="game-hero">
+          <div class="icon-circle">🤫📢</div>
+          <p style="margin:0; flex:1; min-width:220px;">Đây là trò chơi luyện phản xạ nghe rất vui, giúp bé nhớ từ mới lâu hơn.</p>
+        </div>
+        <ul class="step-list">
+          <li>1️⃣ Khi <b>giáo viên HÉT TO</b> một từ (ví dụ: 谁!) → <b>bé phải nói THẦM</b> lại từ đó.</li>
+          <li>2️⃣ Khi <b>giáo viên nói THẦM</b> một từ → <b>bé phải HÉT TO</b> lại từ đó.</li>
+          <li>3️⃣ Đổi vai: để bé làm "giáo viên" ra lệnh, người lớn làm theo — bé sẽ rất thích!</li>
+        </ul>
+        <div class="note" style="margin-top:16px;">📌 Dùng các từ vừa học: 他 · 是 · 谁 · 哪 · 国 · 人</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 — HỘI THOẠI -->
+    <section class="slide" id="slide-4" data-title="Hội thoại" data-icon="🎭">
+      <div class="eyebrow">🎭 Hiện trường vụ án</div>
+      <h2 class="display">Cùng đọc hội thoại</h2>
+      <p class="lead">Một bạn nhỏ đang hỏi về một người rất nổi tiếng. Bé hãy đóng vai bạn nhỏ nhé!</p>
+      <div id="dialogueWrap"></div>
+    </section>
+
+    <!-- SLIDE 5 — ĐOÁN XEM LÀ AI -->
+    <section class="slide" id="slide-5" data-title="Đoán xem là ai" data-icon="🕵️">
+      <div class="eyebrow">🕵️ Phá án cùng thám tử</div>
+      <h2 class="display">Đoán xem đó là ai?</h2>
+      <p class="lead">Chạm vào từng "hồ sơ mật" để lộ hình, rồi hỏi: <span class="han">他/她是谁？</span> <span class="han">他/她是哪国人？</span> Ghi tên vào ô rồi bấm "Đóng hồ sơ".</p>
+      <div class="grid-cards" id="guessGrid"></div>
+    </section>
+
+    <!-- SLIDE 6 — HÁT CÙNG BÉ -->
+    <section class="slide" id="slide-6" data-title="Hát cùng bé" data-icon="🎵">
+      <div class="eyebrow">🎵 Giải lao âm nhạc</div>
+      <h2 class="display">Bài hát tìm bạn — 找朋友</h2>
+      <div class="card song-card">
+        <div class="music-hero">🎶</div>
+        <p style="max-width:480px; margin:0 auto;">Cùng đứng dậy, vỗ tay và vận động theo nhạc! Lời bài hát đầy đủ có trong giáo trình (trang 11, file âm thanh 03-03) — GV bật audio gốc để hát cùng bé.</p>
+        <button class="audio-btn" style="margin-top:14px;" onclick="playAudio('bai-hat-tim-ban.mp3')">🔊 Phát nhạc nền</button>
+        <div class="chip">🧒 Từ khoá trong bài: <span class="han">朋友</span> péngyou — bạn bè</div>
+        <div class="gesture-row">
+          <div class="g"><div class="em">👏</div>Vỗ tay theo nhịp</div>
+          <div class="g"><div class="em">🚶‍♂️</div>Đi vòng tròn tìm bạn</div>
+          <div class="g"><div class="em">🤝</div>Bắt tay khi gặp "bạn mới"</div>
+          <div class="g"><div class="em">👋</div>Chào tạm biệt "再见"</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7 — CÂU CHUYỆN NHỎ -->
+    <section class="slide" id="slide-7" data-title="Câu chuyện nhỏ" data-icon="📖">
+      <div class="eyebrow">📖 Hồ sơ mở rộng</div>
+      <h2 class="display">Câu chuyện nhỏ</h2>
+      <p class="lead">Một buổi chụp ảnh có rất nhiều người nổi tiếng xuất hiện — bé hãy đọc và đoán xem ai là ai nhé!</p>
+      <div id="storyWrap"></div>
+    </section>
+
+    <!-- SLIDE 8 — KIỂM TRA -->
+    <section class="slide" id="slide-8" data-title="Kiểm tra" data-icon="📝">
+      <div class="eyebrow">📝 Thử thách cuối</div>
+      <h2 class="display">Thám tử nhí kiểm tra tay nghề</h2>
+
+      <div class="test-block">
+        <h3>1️⃣ Nghe và chọn tranh đúng</h3>
+        <div class="note" style="margin-bottom:12px;">📌 GV: bật audio thật, để bé chọn tranh, sau đó bấm "Hiện đáp án" để xác nhận cùng bé.</div>
+        <div id="listeningWrap"></div>
+      </div>
+
+      <div class="test-block">
+        <h3>2️⃣ Đọc và chọn Đúng / Sai</h3>
+        <div id="readingWrap"></div>
+        <div class="score-line" id="readingScore">Đã trả lời: 0/3</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9 — TỔNG KẾT -->
+    <section class="slide" id="slide-9" data-title="Tổng kết" data-icon="🏅">
+      <div class="eyebrow">🏅 Kết thúc vụ án</div>
+      <h2 class="display">Chúc mừng thám tử!</h2>
+      <div class="cert" id="certCard">
+        <div class="medal">🏅</div>
+        <h2>GIẤY CHỨNG NHẬN THÁM TỬ NHÍ</h2>
+        <p>Trao cho bạn:</p>
+        <input class="name" type="text" placeholder="Viết tên của bé vào đây">
+        <p>Đã hoàn thành xuất sắc <b class="han" style="font-size:1.2rem;">第三课 · 他是谁?</b></p>
+        <div class="checklist" id="certChecklist"></div>
+        <div class="note" style="margin:16px auto 0; max-width:480px; text-align:left;">
+          🏠 <b>Bài về nhà:</b> Về nhà hỏi bố hoặc mẹ: <span class="han">你是哪国人？</span> và trả lời thật to: <span class="han">我是越南人！</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============ NAVBAR ============ -->
+  <div class="navbar">
+    <button class="nav-btn prev" id="btnPrev" onclick="goTo(currentIndex-1)">◀ Trước</button>
+    <div class="nav-mid">
+      <div id="navLabel">Phần 1/10 · Bìa</div>
+      <div class="dots" id="navDots"></div>
+    </div>
+    <button class="nav-btn next" id="btnNext" onclick="goTo(currentIndex+1)">Tiếp ▶</button>
+  </div>
+</div>
+
+<!-- ============ MENU OVERLAY ============ -->
+<div class="overlay" id="menuOverlay">
+  <div class="overlay-card">
+    <h3>Mục lục bài học <button class="close-x" onclick="closeMenu()">✕</button></h3>
+    <div class="menu-grid" id="menuGrid"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   CẤU HÌNH NỘI DUNG — GIÁO VIÊN CHỈNH SỬA Ở ĐÂY
+   Chỉ cần đặt file ảnh/âm thanh cùng thư mục với file HTML này,
+   và thay đúng tên file (kèm đuôi) trong các mục bên dưới.
+   bằng file thật, cấu trúc trang sẽ tự cập nhật.
+========================================================= */
+
+const VOCAB = [
+  {hanzi:"他", pinyin:"tā", meaning:"anh ấy / cậu ấy (he, him)", img:"tu-ta.png", audio:"tu-ta.mp3", hint:"1 bạn trai đang chỉ tay vào 1 bạn trai khác"},
+  {hanzi:"是", pinyin:"shì", meaning:"là, thì (am / is / are)", img:"tu-shi.png", audio:"tu-shi.mp3", hint:"dấu = nối 2 hình giống nhau (VD: ảnh và tên tương ứng)"},
+  {hanzi:"谁", pinyin:"shéi", meaning:"ai (who, whom)", img:"tu-shei.png", audio:"tu-shei.mp3", hint:"dấu chấm hỏi lớn trên hình bóng người"},
+  {hanzi:"哪", pinyin:"nǎ", meaning:"nào (which)", img:"tu-na.png", audio:"tu-na.mp3", hint:"ngón tay đang phân vân chỉ vào nhiều lá cờ"},
+  {hanzi:"国", pinyin:"guó", meaning:"nước, quốc gia (country)", img:"tu-guo.png", audio:"tu-guo.mp3", hint:"quả địa cầu hoặc dãy cờ nhiều nước"},
+  {hanzi:"人", pinyin:"rén", meaning:"người (person)", img:"tu-ren.png", audio:"tu-ren.mp3", hint:"hình người đơn giản, dễ thương"},
+  {hanzi:"中国人", pinyin:"Zhōngguó rén", meaning:"người Trung Quốc (Chinese person)", img:"tu-zhongguoren.png", audio:"tu-zhongguoren.mp3", hint:"bạn nhỏ đứng cạnh cờ Trung Quốc"},
+];
+
+const DIALOGUE = [
+  { imgHint:"bé gái chỉ tay hỏi, cạnh đó là tượng sáp Thành Long", img:"hoithoai-1.png", audio:"hoithoai-1.mp3",
+    lines:[
+      {han:"他是谁？", pinyin:"Tā shì shéi?", meaning:"Anh ấy là ai?", side:"left"},
+      {han:"他是成龙。", pinyin:"Tā shì Chéng Lóng.", meaning:"Anh ấy là Thành Long.", side:"right"},
+    ]},
+  { imgHint:"bé gái hỏi tiếp, cô gái tóc vàng trả lời", img:"hoithoai-2.png", audio:"hoithoai-2.mp3",
+    lines:[
+      {han:"成龙是哪国人？", pinyin:"Chéng Lóng shì nǎ guó rén?", meaning:"Thành Long là người nước nào?", side:"left"},
+      {han:"中国人。", pinyin:"Zhōngguó rén.", meaning:"Người Trung Quốc.", side:"right"},
+    ]},
+];
+
+const GUESS = [
+  {img:"doan-1.png", hint:"vận động viên bóng rổ nổi tiếng"},
+  {img:"doan-2.png", hint:"nhân vật hoạt hình chú chuột nổi tiếng"},
+  {img:"doan-3.png", hint:"diễn viên hài kịch câm kinh điển"},
+  {img:"doan-4.png", hint:"ca sĩ / người mẫu nổi tiếng"},
+  {img:"doan-5.png", hint:"ca sĩ nhạc pop huyền thoại"},
+  {img:"doan-6.png", hint:"nhân vật hoạt hình mèo máy nổi tiếng"},
+];
+
+const STORY = [
+  {img:"cauchuyen-1.png", audio:"cauchuyen-1.mp3", side:"left", han:"妈妈，她是谁？", pinyin:"Māma, tā shì shéi?", meaning:"Mẹ ơi, chị ấy là ai?"},
+  {img:"cauchuyen-1b.png", audio:"cauchuyen-1b.mp3", side:"right", han:"她是章子怡。", pinyin:"Tā shì Zhāng Zǐyí.", meaning:"Chị ấy là Chương Tử Di."},
+  {img:"cauchuyen-2.png", audio:"cauchuyen-2.mp3", side:"left", han:"他呢？", pinyin:"Tā ne?", meaning:"Còn anh ấy?"},
+  {img:"cauchuyen-2b.png", audio:"cauchuyen-2b.mp3", side:"right", han:"他是姚明。他们都是中国人。", pinyin:"Tā shì Yáo Míng. Tāmen dōu shì Zhōngguó rén.", meaning:"Anh ấy là Diêu Minh. Họ đều là người Trung Quốc."},
+  {img:"cauchuyen-3.png", audio:"cauchuyen-3.mp3", side:"left", han:"他是谁？", pinyin:"Tā shì shéi?", meaning:"Ông ấy là ai?"},
+  {img:"cauchuyen-3b.png", audio:"cauchuyen-3b.mp3", side:"right", han:"我认识他，他是迈克尔·杰克逊。", pinyin:"Wǒ rènshi tā, tā shì Màikè'ěr · Jiékèxùn.", meaning:"Con biết chú ấy, chú ấy là Michael Jackson."},
+  {img:"cauchuyen-4.png", audio:"cauchuyen-4.mp3", side:"left", han:"她是谁？真漂亮！", pinyin:"Tā shì shéi? Zhēn piàoliang!", meaning:"Chị ấy là ai? Xinh quá!"},
+  {img:"cauchuyen-4b.png", audio:"cauchuyen-4b.mp3", side:"right", han:"一，二，三，茄子！", pinyin:"Yī, èr, sān, qiézi!", meaning:"Một, hai, ba... cười lên nào! (chụp ảnh)"},
+  {img:"cauchuyen-5.png", audio:"cauchuyen-5.mp3", side:"left", han:"你好，我是艾玛。", pinyin:"Nǐ hǎo, wǒ shì Àimǎ.", meaning:"Xin chào, mình là Emma."},
+  {img:"cauchuyen-5b.png", audio:"cauchuyen-5b.mp3", side:"right", han:"你好！你好！", pinyin:"Nǐ hǎo! Nǐ hǎo!", meaning:"Chào bạn! Chào bạn!"},
+];
+
+/* 🔧 GV: nghe file audio thật rồi chỉnh lại "answer" cho đúng (A/B/C) */
+const LISTENING = [
+  {answer:"A", audio:"nghe-cau1.mp3", options:[
+    {label:"A", img:"nghe-1a.png", hint:"cậu bé"},
+    {label:"B", img:"nghe-1b.png", hint:"con mèo"},
+    {label:"C", img:"nghe-1c.png", hint:"con thỏ"}]},
+  {answer:"B", audio:"nghe-cau2.mp3", options:[
+    {label:"A", img:"nghe-2a.png", hint:"bé gái cười vui"},
+    {label:"B", img:"nghe-2b.png", hint:"bé gái vẫy tay chào"},
+    {label:"C", img:"nghe-2c.png", hint:"bé gái bất ngờ, che miệng"}]},
+  {answer:"A", audio:"nghe-cau3.mp3", options:[
+    {label:"A", img:"nghe-3a.png", hint:"gia đình 3 người"},
+    {label:"B", img:"nghe-3b.png", hint:"bé gái tết tóc bím"},
+    {label:"C", img:"nghe-3c.png", hint:"cậu bé múa lân/rồng"}]},
+];
+
+const READING = [
+  {img:"doc-1.png", hint:"bạn trai chỉ tay sang 1 bạn trai khác", han:"他", pinyin:"tā", correct:true},
+  {img:"doc-2.png", hint:"bạn nhỏ đứng cạnh Vạn Lý Trường Thành, cầm cờ Trung Quốc", han:"中国人", pinyin:"Zhōngguó rén", correct:true},
+  {img:"doc-3.png", hint:"một quả táo", han:"谁", pinyin:"shéi", correct:false},
+];
+
+/* ============================================================
+   HẾT PHẦN CẤU HÌNH — không cần sửa bên dưới
+============================================================ */
+
+const SECTION_IDS = Array.from({length:10}, (_,i)=>i);
+let currentIndex = 0;
+const clueSet = new Set();
+const TOTAL_CLUES = 16;
+
+function collectClue(key){
+  if(!clueSet.has(key)){
+    clueSet.add(key);
+    document.getElementById('clueCount').textContent = clueSet.size;
+  }
+}
+
+function photoSlotHTML(img, hint, round){
+  return `<div class="photo-slot${round?' round':''}">
+      <img src="${img}" alt="${hint}" onerror="this.style.display='none'">
+      <span class="hint-text">🖼️ ${hint}</span>
+    </div>`;
+}
+
+/* ---------- render Từ mới ---------- */
+function renderVocab(){
+  const wrap = document.getElementById('vocabGrid');
+  wrap.innerHTML = VOCAB.map((v,i)=>`
+    <div class="idcard" data-idx="${i}">
+      <div class="idcard-inner">
+        <div class="idcard-face idcard-front">
+          <span class="tape"></span>
+          <div class="han big">${v.hanzi}</div>
+          <div class="pinyin">${v.pinyin}</div>
+          <div class="tap-hint">👆 Chạm để mở hồ sơ</div>
+        </div>
+        <div class="idcard-face idcard-back">
+          ${photoSlotHTML(v.img, v.hint)}
+          <div class="meaning">${v.meaning}</div>
+          <button class="audio-btn" type="button" data-audio="${v.audio}">🔊 Nghe</button>
+        </div>
+      </div>
+      <div class="stamp" hidden>ĐÃ<br>HỌC ✓</div>
+    </div>`).join('');
+
+  wrap.querySelectorAll('.idcard').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      if(e.target.closest('.audio-btn')){
+        e.stopPropagation();
+        playAudio(e.target.closest('.audio-btn').dataset.audio);
+        return;
+      }
+      card.classList.toggle('flipped');
+      if(!card.dataset.learned){
+        card.dataset.learned = "1";
+        card.querySelector('.stamp').hidden = false;
+        collectClue('vocab-'+card.dataset.idx);
+      }
+    });
+  });
+}
+
+/* ---------- render Hội thoại ---------- */
+function renderDialogue(){
+  const wrap = document.getElementById('dialogueWrap');
+  wrap.innerHTML = DIALOGUE.map((d,i)=>`
+    <div class="card" style="margin-bottom:18px;">
+      <span class="panel-num">${i+1}</span>
+      <div class="panel">
+        <div class="avatar">${photoSlotHTML(d.img, d.imgHint, true)}</div>
+        <div style="flex:1; display:grid; gap:10px; min-width:220px;">
+          ${d.lines.map(l=>`
+            <div class="bubble" style="align-self:${l.side==='right'?'flex-end':'flex-start'};">
+              <div class="han">${l.han}</div>
+              <div class="pinyin">${l.pinyin}</div>
+              <div class="meaning">${l.meaning}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+      <button class="audio-btn" style="margin-top:10px;" data-audio="${d.audio}">🔊 Nghe cả đoạn</button>
+    </div>`).join('');
+  wrap.querySelectorAll('.audio-btn').forEach(b=> b.addEventListener('click', ()=>playAudio(b.dataset.audio)));
+}
+
+/* ---------- render Đoán xem là ai ---------- */
+function renderGuess(){
+  const wrap = document.getElementById('guessGrid');
+  wrap.innerHTML = GUESS.map((g,i)=>`
+    <div class="guess-card" data-idx="${i}">
+      <div style="position:relative;">
+        ${photoSlotHTML(g.img, g.hint)}
+        <div class="mystery">❓</div>
+      </div>
+      <div class="prompt">他/她是谁？ 他/她是哪国人？</div>
+      <input type="text" placeholder="Ghi tên bạn ấy...">
+      <button class="close-btn">✓ Đóng hồ sơ</button>
+      <div class="closed-stamp">✅ ĐÃ TÌM RA!</div>
+    </div>`).join('');
+
+  wrap.querySelectorAll('.guess-card').forEach(card=>{
+    const photo = card.querySelector('.photo-slot');
+    photo.addEventListener('click', ()=>{
+      card.classList.add('revealed');
+      collectClue('guess-reveal-'+card.dataset.idx);
+    });
+    card.querySelector('.close-btn').addEventListener('click', ()=>{
+      const input = card.querySelector('input');
+      if(input.value.trim().length===0){
+        showToast('✏️ Hãy ghi tên bạn ấy vào ô trước khi đóng hồ sơ nhé!');
+        return;
+      }
+      card.classList.add('closed');
+      collectClue('guess-close-'+card.dataset.idx);
+    });
+  });
+}
+
+/* ---------- render Câu chuyện nhỏ ---------- */
+function renderStory(){
+  const wrap = document.getElementById('storyWrap');
+  wrap.innerHTML = STORY.map((s,i)=>`
+    <div class="panel ${s.side==='right'?'right':''}">
+      <div class="avatar">${photoSlotHTML(s.img, 'cảnh '+ (i+1))}</div>
+      <div class="bubble">
+        <div class="han">${s.han}</div>
+        <div class="pinyin">${s.pinyin}</div>
+        <div class="meaning">${s.meaning}</div>
+        <button class="audio-btn" data-audio="${s.audio}">🔊 Nghe</button>
+      </div>
+    </div>`).join('');
+  wrap.querySelectorAll('.audio-btn').forEach(b=> b.addEventListener('click', ()=>playAudio(b.dataset.audio)));
+}
+
+/* ---------- render Nghe (listening) ---------- */
+function renderListening(){
+  const wrap = document.getElementById('listeningWrap');
+  wrap.innerHTML = LISTENING.map((q,qi)=>`
+    <div class="q-wrap" data-qi="${qi}">
+      <div class="q-title">Câu ${qi+1}.
+        <button class="audio-btn" data-audio="${q.audio}">🔊 Nghe</button>
+      </div>
+      <div class="opt-row">
+        ${q.options.map(o=>`
+          <div class="opt" data-label="${o.label}">
+            ${photoSlotHTML(o.img, o.hint)}
+            <div class="lab">${o.label}</div>
+          </div>`).join('')}
+      </div>
+      <button class="reveal-btn">👀 Hiện đáp án</button>
+    </div>`).join('');
+
+  wrap.querySelectorAll('.q-wrap').forEach(qw=>{
+    const qi = qw.dataset.qi;
+    qw.querySelectorAll('.audio-btn').forEach(b=> b.addEventListener('click', ()=>playAudio(b.dataset.audio)));
+    qw.querySelectorAll('.opt').forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        qw.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+        opt.classList.add('selected');
+      });
+    });
+    qw.querySelector('.reveal-btn').addEventListener('click', ()=>{
+      const ans = LISTENING[qi].answer;
+      qw.querySelectorAll('.opt').forEach(o=>{
+        if(o.dataset.label===ans) o.classList.add('correct-mark');
+      });
+      collectClue('listen-'+qi);
+    });
+  });
+}
+
+/* ---------- render Đọc (reading true/false) ---------- */
+let readingAnswered = 0, readingCorrect = 0;
+function renderReading(){
+  const wrap = document.getElementById('readingWrap');
+  wrap.innerHTML = READING.map((r,ri)=>`
+    <div class="q-wrap" data-ri="${ri}">
+      <div class="tf-row">
+        <div class="photo-slot"><img src="${r.img}" alt="${r.hint}" onerror="this.style.display='none'"><span class="hint-text" style="font-size:.7rem;">🖼️ ${r.hint}</span></div>
+        <div class="han">${r.han}</div>
+        <div class="pinyin">${r.pinyin}</div>
+        <div class="tf-btns">
+          <button class="tf-btn" data-val="true">Đúng</button>
+          <button class="tf-btn" data-val="false">Sai</button>
+        </div>
+      </div>
+    </div>`).join('');
+
+  wrap.querySelectorAll('.q-wrap').forEach(qw=>{
+    const ri = qw.dataset.ri;
+    const btns = qw.querySelectorAll('.tf-btn');
+    btns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(btn.disabled) return;
+        const chosen = btn.dataset.val === 'true';
+        const isRight = chosen === READING[ri].correct;
+        btn.classList.add(isRight?'correct':'wrong');
+        btns.forEach(b=>b.disabled=true);
+        if(!isRight){
+          qw.querySelector(`.tf-btn[data-val="${READING[ri].correct}"]`).classList.add('correct');
+        }
+        readingAnswered++;
+        if(isRight) readingCorrect++;
+        document.getElementById('readingScore').textContent = `Đã trả lời: ${readingAnswered}/3 · Đúng: ${readingCorrect} 🌟`;
+        collectClue('reading-'+ri);
+      });
+    });
+  });
+}
+
+/* ---------- render Chứng nhận ---------- */
+function renderCert(){
+  const box = document.getElementById('certChecklist');
+  box.innerHTML = VOCAB.map(v=>{
+    const learned = document.querySelector(`.idcard[data-idx]`) ? true : true;
+    return `<div class="ci"><span class="han">${v.hanzi}</span> ${v.pinyin}</div>`;
+  }).join('');
+  spawnConfetti();
+}
+
+function spawnConfetti(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const emojis = ['⭐','🎉','🏅','✨'];
+  for(let i=0;i<14;i++){
+    const s = document.createElement('span');
+    s.className = 'confetti-piece';
+    s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.left = Math.random()*100+'vw';
+    s.style.animationDuration = (2.2+Math.random()*1.4)+'s';
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(), 4000);
+  }
+}
+
+/* ---------- audio ---------- */
+function playAudio(src){
+  const a = new Audio(src);
+  a.play().catch(()=>{
+    showToast('🔈 Chưa có file: '+src+' — GV hãy đặt file âm thanh này cùng thư mục với file HTML.');
+  });
+}
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.audio-btn[data-audio]');
+  if(btn && !btn.closest('#vocabGrid, #dialogueWrap, #storyWrap, #listeningWrap')){
+    playAudio(btn.dataset.audio);
+  }
+});
+
+/* ---------- toast ---------- */
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+/* ---------- nav ---------- */
+function buildDots(){
+  const dots = document.getElementById('navDots');
+  dots.innerHTML = SECTION_IDS.map(i=>`<span data-i="${i}"></span>`).join('');
+}
+function buildMenu(){
+  const grid = document.getElementById('menuGrid');
+  const items = SECTION_IDS.map(i=>{
+    const sec = document.getElementById('slide-'+i);
+    return `<button data-i="${i}">${sec.dataset.icon} ${sec.dataset.title}</button>`;
+  }).join('');
+  grid.innerHTML = items;
+  grid.querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click', ()=>{ goTo(parseInt(b.dataset.i)); closeMenu(); });
+  });
+}
+function openMenu(){
+  document.getElementById('menuOverlay').classList.add('open');
+  document.querySelectorAll('#menuGrid button').forEach(b=>{
+    b.classList.toggle('current', parseInt(b.dataset.i)===currentIndex);
+  });
+}
+function closeMenu(){ document.getElementById('menuOverlay').classList.remove('open'); }
+
+function goTo(i){
+  i = Math.max(0, Math.min(SECTION_IDS.length-1, i));
+  document.getElementById('slide-'+currentIndex).classList.remove('active');
+  currentIndex = i;
+  const sec = document.getElementById('slide-'+currentIndex);
+  sec.classList.add('active');
+  document.getElementById('navLabel').textContent = `Phần ${currentIndex+1}/10 · ${sec.dataset.title}`;
+  document.querySelectorAll('#navDots span').forEach(d=> d.classList.toggle('on', parseInt(d.dataset.i)===currentIndex));
+  document.getElementById('btnPrev').disabled = currentIndex===0;
+  document.getElementById('btnNext').textContent = currentIndex===SECTION_IDS.length-1 ? '🏁 Hoàn thành' : 'Tiếp ▶';
+  document.getElementById('btnNext').disabled = currentIndex===SECTION_IDS.length-1;
+  document.querySelector('.stage').scrollTo({top:0, behavior:'auto'});
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(currentIndex===9) renderCert();
+}
+
+/* ---------- init ---------- */
+renderVocab();
+renderDialogue();
+renderGuess();
+renderStory();
+renderListening();
+renderReading();
+buildDots();
+buildMenu();
+goTo(0);
+document.getElementById('menuOverlay').addEventListener('click',(e)=>{ if(e.target.id==='menuOverlay') closeMenu(); });
+</script>
+</body>
+</html>
