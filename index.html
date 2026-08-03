@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 3: 他是谁？Anh ấy là ai? — YCT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#2F9BFF;
+    --teal-dark:#0B62C4;
+    --coral:#FF7A3D;
+    --yellow:#FFD23F;
+    --lavender:#35C982;
+    --pink:#FF5C8A;
+    --purple:#8B5CF6;
+    --amber:#F5A623;
+    --cream:#F3FAFF;
+    --ink:#2B2B3D;
+    --card:#FFFFFF;
+    --radius:22px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 8% 12%, rgba(255,210,63,0.25) 0, transparent 40%),
+      radial-gradient(circle at 92% 85%, rgba(53,201,130,0.22) 0, transparent 40%),
+      var(--cream);
+    font-family:'Quicksand',sans-serif;
+    color:var(--ink);
+    padding-bottom:60px;
+  }
+  h1,h2,h3,.display{font-family:'Baloo 2',cursive;}
+  .hanzi{font-family:'KaiTi','STKaiti','Kaiti SC','楷体',serif;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:linear-gradient(135deg,var(--teal) 0%, var(--teal-dark) 100%);
+    color:white;
+    padding:38px 20px 70px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    border-radius:0 0 40px 40px;
+  }
+  .hero::before, .hero::after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.12);
+  }
+  .hero::before{width:180px;height:180px;top:-60px;left:-50px;}
+  .hero::after{width:120px;height:120px;bottom:-40px;right:-20px;}
+  .hero .eyebrow{
+    display:inline-block;
+    background:rgba(255,255,255,0.18);
+    padding:6px 16px;
+    border-radius:999px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    font-size:13px;
+    margin-bottom:14px;
+  }
+  .hero h1{font-size:2.6rem;margin:6px 0;line-height:1.1;}
+  .hero .sub{font-size:1.15rem;opacity:0.95;margin-top:4px;}
+  .mascot{
+    width:96px;height:96px;margin:18px auto 0;
+    filter:drop-shadow(0 6px 10px rgba(0,0,0,0.15));
+    animation:bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-10px) rotate(3deg);}}
+  .mascot .eye-blink{transform-box:fill-box;transform-origin:center;animation:mascotBlink 4.2s ease-in-out infinite;}
+  @keyframes mascotBlink{
+    0%, 88%, 100%{transform:scaleY(1);}
+    92%{transform:scaleY(0.12);}
+    96%{transform:scaleY(1);}
+  }
+  .mascot .sparkle{fill:#FFF3B0;transform-box:fill-box;transform-origin:center;animation:mascotTwinkle 1.8s ease-in-out infinite;}
+  .mascot .sparkle-1{animation-delay:0s;}
+  .mascot .sparkle-2{animation-delay:0.5s;}
+  .mascot .sparkle-3{animation-delay:1s;}
+  @keyframes mascotTwinkle{
+    0%,100%{opacity:0.15;transform:scale(0.6);}
+    50%{opacity:1;transform:scale(1.2);}
+  }
+
+  /* roadmap */
+  .sticky-nav{
+    position:sticky;top:0;z-index:40;
+    margin-top:-40px;padding:0 0 14px;
+    transition:background .25s ease, box-shadow .25s ease, padding-top .25s ease;
+    border-radius:0 0 24px 24px;
+  }
+  .sticky-nav.stuck{
+    background:var(--cream);
+    box-shadow:0 10px 22px rgba(43,43,61,0.12);
+    padding-top:10px;
+  }
+  .roadmap{
+    max-width:1200px;margin:0 auto;padding:0 24px;
+    display:flex;justify-content:space-between;gap:8px;position:relative;z-index:2;
+  }
+  .stop{
+    background:white;border-radius:18px;padding:12px 6px;flex:1;
+    text-align:center;
+    font-weight:700;font-size:12.5px;color:var(--teal-dark);
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    text-decoration:none;cursor:pointer;border:none;font-family:'Quicksand',sans-serif;
+    -webkit-appearance:none;appearance:none;
+    transition:transform .15s;
+  }
+  .stop:active{transform:scale(0.93);}
+  .stop.active{background:var(--teal);color:white;box-shadow:0 6px 14px rgba(47,155,255,0.35);}
+  .stop.active .num{background:white;color:var(--teal-dark);}
+  .card{scroll-margin-top:96px;}
+  .stop .num{
+    width:26px;height:26px;border-radius:50%;background:var(--yellow);
+    color:#5c3d00;display:flex;align-items:center;justify-content:center;font-size:13px;
+  }
+
+  /* back to top */
+  .to-top-btn{
+    position:fixed;right:18px;bottom:22px;z-index:60;
+    width:52px;height:52px;border-radius:50%;
+    background:var(--coral);color:white;border:none;font-size:20px;
+    box-shadow:0 10px 22px rgba(43,43,61,0.28);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;transform:translateY(12px);pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .to-top-btn.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .to-top-btn:active{transform:scale(0.9);}
+
+  /* fullscreen toggle */
+  .fullscreen-btn{
+    position:fixed;right:18px;bottom:84px;z-index:60;
+    width:48px;height:48px;border-radius:50%;
+    background:var(--teal);color:white;border:none;font-size:18px;
+    box-shadow:0 10px 22px rgba(43,43,61,0.28);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .fullscreen-btn:active{transform:scale(0.9);}
+  .fullscreen-btn.is-full{background:var(--lavender);}
+
+  main{max-width:1200px;margin:50px auto 0;padding:0 24px;display:flex;flex-direction:column;gap:34px;}
+  .panel{display:none;}
+  .panel.active{display:flex;flex-direction:column;gap:34px;animation:panelIn .25s ease;}
+  @keyframes panelIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- CARD ---------- */
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:26px 14px;
+    border:2px solid rgba(47,155,255,0.08);
+  }
+  .card-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+  .card-head .badge{
+    width:44px;height:44px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;flex-shrink:0;
+  }
+  .card-head h2{margin:0;font-size:1.4rem;color:var(--ink);}
+  .card-head .tag{display:block;font-size:12.5px;color:#8a8a9a;font-weight:600;margin-top:2px;}
+
+  .b-teal{background:rgba(47,155,255,0.15);}
+  .b-coral{background:rgba(255,122,61,0.15);}
+  .b-yellow{background:rgba(255,210,63,0.25);}
+  .b-lavender{background:rgba(53,201,130,0.18);}
+  .b-pink{background:rgba(255,92,138,0.16);}
+  .b-purple{background:rgba(139,92,246,0.16);}
+  .b-amber{background:rgba(245,166,35,0.18);}
+
+  /* speech bubble from mascot */
+  .mascot-tip{
+    display:flex;gap:10px;align-items:flex-start;
+    background:var(--cream);border:2px dashed var(--yellow);
+    border-radius:16px;padding:10px 14px;margin-bottom:16px;font-size:14px;
+  }
+  .mascot-tip .m-emoji{font-size:26px;}
+
+  /* big split cards: text left (căn giữa), image right */
+  .big-item{
+    display:flex;gap:12px;align-items:stretch;
+    background:linear-gradient(160deg,#fff, #fbfaff);
+    border:2px solid #eee6ff;border-radius:20px;padding:14px 10px;
+  }
+  @media(max-width:480px){.big-item{flex-direction:column;}}
+
+  /* ---------- FLASHCARD DECK: các thẻ chồng lên nhau, lật bằng nút ---------- */
+  .deck-wrap{margin-bottom:8px;}
+  .deck-stage{position:relative;}
+  .deck-card{transition:transform .25s ease, opacity .25s ease;}
+  .deck-card.deck-top{position:relative;z-index:5;}
+  .deck-card.deck-peek{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    transform:translate(calc(var(--peek,1)*6px), calc(var(--peek,1)*8px));
+    opacity:calc(1 - var(--peek,1)*0.16);
+  }
+  .deck-card.deck-peek .big-item{height:100%;}
+  .deck-controls{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:14px;flex-wrap:wrap;}
+  .deck-btn{
+    border-radius:999px;padding:10px 18px;font-weight:800;font-size:14px;
+    cursor:pointer;border:none;font-family:'Quicksand',sans-serif;white-space:nowrap;
+  }
+  .deck-btn:active{transform:scale(0.94);}
+  .deck-prev{background:white;border:2px solid var(--teal);color:var(--teal-dark);}
+  .deck-shuffle{background:rgba(47,155,255,0.15);color:var(--teal-dark);}
+  .deck-next{background:var(--coral);color:white;}
+  .deck-count{text-align:center;font-size:12.5px;color:#8a8a9a;font-weight:700;margin-top:8px;}
+  .big-text{
+    flex:1 1 55%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;
+    text-align:center;
+  }
+  .big-text .hz{font-size:2.9rem;font-weight:800;color:var(--teal-dark);line-height:1.1;}
+  .big-text .listen-ico{font-size:1.3rem;opacity:.55;vertical-align:middle;margin-left:2px;}
+  .big-text:active .listen-ico{opacity:1;transform:scale(1.15);}
+  .big-text .py{font-size:15px;color:#8a8a9a;font-weight:700;}
+  .big-text .vn{font-size:17px;font-weight:700;color:var(--ink);}
+  .big-img{
+    flex:0 0 42%;aspect-ratio:1/1;border-radius:18px;overflow:hidden;
+  }
+  @media(max-width:480px){.big-img{flex-basis:auto;width:100%;max-width:280px;margin:0 auto;}}
+  .big-img img{width:100%;height:100%;object-fit:cover;display:block;}
+  .speak-btn{
+    margin-top:8px;border:none;background:var(--coral);color:white;
+    padding:8px 16px;border-radius:999px;font-weight:700;font-size:13px;
+    cursor:pointer;display:inline-flex;align-items:center;gap:5px;width:fit-content;
+  }
+  .speak-btn:active{transform:scale(0.94);}
+
+  /* numbers: reuse .big-item, with number-specific text styling */
+  .big-text .arabic{font-size:3rem;font-weight:800;color:var(--teal-dark);line-height:1;}
+
+  .img-slot{
+    border:2px dashed #c9c2e8;background:#faf9ff;border-radius:16px;
+    min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#8a83ad;font-size:12.5px;text-align:center;padding:10px;gap:4px;
+    overflow:hidden;position:relative;
+  }
+  .big-img.img-slot{min-height:0;}
+  .img-slot img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;}
+  .img-slot.filled{border:none;background:transparent;padding:0;}
+  .quiz-img-slot{width:100%;max-width:280px;aspect-ratio:1/1;height:auto;min-height:0;margin:0 auto 12px;}
+
+  /* dialogues */
+  .dialogue{display:flex;gap:14px;margin-bottom:18px;align-items:center;}
+  .dialogue .bubble-pair{flex:1;min-width:0;}
+  @media(max-width:480px){.dialogue{flex-direction:column;}}
+  .bubble-pair{display:flex;flex-direction:column;gap:8px;}
+  .bubble{
+    padding:10px 14px;border-radius:14px;font-size:14.5px;max-width:82%;
+    cursor:pointer;transition:transform .12s;
+  }
+  .bubble:active{transform:scale(0.96);}
+  .bubble .listen-ico{font-size:11px;opacity:.5;margin-left:2px;vertical-align:middle;}
+  .bubble.a{background:#E7FBF8;border-bottom-left-radius:2px;align-self:flex-start;}
+  .bubble.b{background:#FFF1E6;border-bottom-right-radius:2px;align-self:flex-end;}
+  .bubble .hz{font-size:1.7rem;}
+  .bubble .py{font-size:12.5px;color:#8a8a9a;}
+
+  .game-btn-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;}
+  .pill-btn{
+    background:var(--lavender);color:white;border:none;border-radius:999px;
+    padding:9px 16px;font-weight:700;font-size:13.5px;cursor:pointer;
+  }
+  .pill-btn:active{transform:scale(0.95);}
+
+  /* song */
+  .song-box{background:#FFF7E0;border-radius:16px;padding:16px;}
+  .song-line{
+    padding:8px 6px;border-radius:10px;cursor:pointer;font-size:15px;line-height:1.5;
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+  }
+  .song-line:hover{background:rgba(255,210,63,0.35);}
+  .song-line .hz{font-size:1.6rem;line-height:1.35;font-weight:700;}
+  .song-line small{color:#8a8a9a;display:block;font-size:12.5px;font-weight:600;margin-top:2px;font-family:'Quicksand',sans-serif;}
+  .song-line.playing{background:var(--yellow);}
+
+  .song-player{
+    display:flex;align-items:center;gap:12px;margin-top:12px;
+    background:#FFF7E0;border-radius:999px;padding:8px 16px 8px 8px;
+  }
+  .player-btn{
+    background:var(--lavender);color:white;border:none;border-radius:50%;
+    width:40px;height:40px;min-width:40px;font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .player-btn:active{transform:scale(0.92);}
+  .player-btn-pause{background:#c9c2e8;}
+  .player-btn-pause.active{background:var(--coral);}
+  .song-seek{
+    flex:1;height:6px;border-radius:999px;appearance:none;-webkit-appearance:none;
+    background:linear-gradient(to right, var(--lavender) 0%, var(--lavender) 0%, #f0e4c8 0%, #f0e4c8 100%);
+    cursor:pointer;outline:none;
+  }
+  .song-seek::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;
+    background:var(--lavender);border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.25);cursor:pointer;
+  }
+  .song-seek::-moz-range-thumb{
+    width:16px;height:16px;border-radius:50%;background:var(--lavender);
+    border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.25);cursor:pointer;
+  }
+  .song-time{font-size:12.5px;font-weight:700;color:#8a8a9a;white-space:nowrap;font-family:'Quicksand',sans-serif;}
+
+  /* matching exercise */
+  .match-wrap{display:flex;justify-content:space-between;gap:14px;}
+  .match-col{display:flex;flex-direction:column;gap:12px;flex:1;}
+  .match-item{
+    position:relative;
+    border:2px solid #e5e0ff;border-radius:12px;padding:10px 12px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;font-size:14px;font-weight:700;cursor:pointer;background:white;
+    transition:all .15s;min-height:82px;
+  }
+  .match-item .match-hz{font-size:1.85rem;font-weight:800;color:var(--teal-dark);line-height:1.15;display:block;}
+  .match-item.correct .match-hz{color:#2b8a3e;}
+  .match-item .match-py{font-size:12.5px;color:#8a8a9a;font-weight:700;display:block;margin-top:3px;}
+  .match-item .match-vn{font-size:14.5px;font-weight:700;color:var(--ink);}
+  .match-item.selected{border-color:var(--teal);background:rgba(47,155,255,0.12);box-shadow:0 0 0 3px rgba(47,155,255,0.25);}
+  .match-item.correct{
+    border-color:#37b24d;background:#ebfbee;color:#2b8a3e;
+    box-shadow:0 0 0 4px rgba(55,178,77,0.3);
+    animation:matchCorrectPop .45s ease;
+  }
+  .match-item.correct::after{
+    content:'✔'; position:absolute; top:-10px; right:-10px;
+    width:26px;height:26px;border-radius:50%;background:#37b24d;color:white;
+    font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.2); animation:badgeDrop .35s ease;
+  }
+  .match-item.wrong{
+    border-color:var(--coral);background:#ffe3e0;color:#c92a2a;
+    box-shadow:0 0 0 4px rgba(255,122,61,0.35);
+    animation:shake .45s;
+  }
+  .match-item.wrong .match-hz{color:#c92a2a;}
+  .match-item.wrong::after{
+    content:'✘'; position:absolute; top:-10px; right:-10px;
+    width:26px;height:26px;border-radius:50%;background:var(--coral);color:white;
+    font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.2); animation:badgeDrop .35s ease;
+  }
+  @keyframes shake{0%,100%{transform:translateX(0);}15%{transform:translateX(-7px);}30%{transform:translateX(7px);}45%{transform:translateX(-6px);}60%{transform:translateX(6px);}75%{transform:translateX(-3px);}90%{transform:translateX(3px);}}
+  @keyframes matchCorrectPop{0%{transform:scale(1);}40%{transform:scale(1.12);}70%{transform:scale(0.97);}100%{transform:scale(1);}}
+  @keyframes badgeDrop{0%{opacity:0;transform:scale(0.3) translateY(-6px);}100%{opacity:1;transform:scale(1) translateY(0);}}
+  .progress-line{margin-top:10px;font-size:13px;font-weight:700;color:var(--teal-dark);text-align:center;}
+
+  /* thanh tiến độ dùng chung */
+  .progress-track{
+    width:100%;height:12px;border-radius:999px;background:#EFEAFF;overflow:hidden;margin-top:8px;
+  }
+  .progress-fill{
+    height:100%;border-radius:999px;background:linear-gradient(90deg,var(--lavender),var(--teal));
+    transition:width .35s ease;width:0%;
+  }
+
+  /* true/false */
+  .tf-item{
+    background:linear-gradient(160deg,#fff,#fbfaff);
+    border:2px solid #eee6ff;border-radius:18px;
+    padding:14px;margin-bottom:14px;
+  }
+  .tf-item:last-child{margin-bottom:0;}
+  .tf-item .big-item{border:none;background:transparent;padding:0;margin-bottom:14px;}
+  .tf-buttons{display:flex;gap:10px;}
+  .tf-buttons button{
+    flex:1;border:none;border-radius:12px;padding:12px;font-weight:800;cursor:pointer;font-size:15px;
+    transition:all .15s;
+  }
+  .tf-yes{background:#eafff0;color:#2b8a3e;}
+  .tf-no{background:#fff0ee;color:var(--coral);}
+  .tf-buttons button.picked{outline:3px solid var(--teal);}
+  .tf-buttons button.right-pick{
+    background:#37b24d;color:#fff;box-shadow:0 0 0 4px rgba(55,178,77,0.3);
+    animation:matchCorrectPop .45s ease;
+  }
+  .tf-buttons button.wrong-pick{
+    background:var(--coral);color:#fff;box-shadow:0 0 0 4px rgba(255,122,61,0.35);
+    animation:shake .45s;
+  }
+  .tf-buttons button.reveal-correct{outline:3px dashed #37b24d;box-shadow:0 0 0 3px rgba(55,178,77,0.2);}
+  .tf-buttons button:disabled{cursor:default;}
+  .tf-buttons button:disabled:not(.right-pick):not(.wrong-pick):not(.reveal-correct){opacity:.45;}
+
+  /* quiz — đếm ngược, mỗi câu một thẻ */
+  .quiz-topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;}
+  .quiz-count{font-size:13px;font-weight:800;color:var(--teal-dark);white-space:nowrap;}
+  .timer-track{
+    width:100%;height:10px;border-radius:999px;background:#FFE7DF;overflow:hidden;margin-bottom:16px;
+  }
+  .timer-fill{
+    height:100%;border-radius:999px;background:var(--coral);width:100%;
+  }
+  .timer-fill.tick{transition:width linear;}
+  .timer-fill.low{background:#E03131;}
+  .quiz-card{
+    background:linear-gradient(160deg,#fff,#fbfaff);
+    border:2px solid #eee6ff;border-radius:20px;padding:18px;
+    animation:popin .25s ease;
+  }
+  @keyframes popin{from{opacity:0;transform:scale(.96);}to{opacity:1;transform:scale(1);}}
+  .quiz-badge{
+    display:inline-block;font-size:11.5px;font-weight:800;color:var(--lavender);
+    background:rgba(53,201,130,0.15);padding:3px 10px;border-radius:999px;margin-bottom:8px;
+  }
+  .quiz-card .stem{font-weight:800;font-size:1.05rem;margin:0 0 6px;}
+  .quiz-card .stem .hanzi{font-size:1.7rem;}
+  .quiz-listen-btn{
+    border:none;background:var(--coral);color:white;padding:10px 18px;border-radius:999px;
+    font-weight:800;font-size:14px;cursor:pointer;margin-bottom:10px;display:inline-flex;gap:6px;align-items:center;
+  }
+  .quiz-listen-btn:active{transform:scale(0.95);}
+  .quiz-opts{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+  .opt-btn{
+    position:relative;
+    text-align:left;border:2px solid #eee;background:white;border-radius:12px;
+    padding:10px 14px;font-size:14.5px;cursor:pointer;transition:all .15s;
+  }
+  .opt-btn .hanzi{font-size:1.15rem;}
+  .opt-btn.correct{
+    background:#37b24d;color:#fff;border-color:#37b24d;
+    box-shadow:0 0 0 4px rgba(55,178,77,0.3);
+    animation:matchCorrectPop .45s ease;
+  }
+  .opt-btn.correct::after{
+    content:'✔'; position:absolute; top:-9px; right:-9px;
+    width:24px;height:24px;border-radius:50%;background:#2b8a3e;color:#fff;
+    font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.2); animation:badgeDrop .35s ease;
+  }
+  .opt-btn.wrong{
+    background:var(--coral);color:#fff;border-color:var(--coral);
+    box-shadow:0 0 0 4px rgba(255,122,61,0.35);
+    animation:shake .45s;
+  }
+  .opt-btn.wrong::after{
+    content:'✘'; position:absolute; top:-9px; right:-9px;
+    width:24px;height:24px;border-radius:50%;background:#c92a2a;color:#fff;
+    font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.2); animation:badgeDrop .35s ease;
+  }
+  .quiz-done-card{
+    text-align:center;padding:24px 12px;
+  }
+  .quiz-done-card .big-emoji{font-size:2.6rem;}
+  .redo-btn{
+    margin-top:14px;border:none;background:var(--lavender);color:white;
+    padding:10px 20px;border-radius:999px;font-weight:800;font-size:14px;cursor:pointer;
+  }
+  .ready-btn{
+    margin-top:14px;border:none;background:var(--teal);color:white;
+    padding:12px 26px;border-radius:999px;font-weight:800;font-size:15px;cursor:pointer;
+  }
+  .part-badge{
+    display:inline-block;font-size:11.5px;font-weight:800;color:#8a8a9a;
+    background:#F4F1FF;padding:3px 10px;border-radius:999px;margin-bottom:6px;
+  }
+
+  /* ---------- GAME HUD & KẾT QUẢ ---------- */
+  .game-hud{
+    position:sticky; top:70px; z-index:38;
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+    color:white; border-radius:16px; padding:12px 18px;
+    font-weight:800; font-size:14px; box-shadow:0 8px 18px rgba(47,155,255,0.3);
+  }
+  .game-hud-score{transition:transform .2s ease;}
+  .game-hud-score.score-pop{animation:scorePop .4s ease;}
+  @keyframes scorePop{0%{transform:scale(1);}40%{transform:scale(1.25);}100%{transform:scale(1);}}
+  .game-final-stars{font-size:2.4rem;margin:8px 0;letter-spacing:4px;}
+
+  /* ---------- SUB-NAV: 3 tab phần luyện tập, cố định khi cuộn ---------- */
+  .sub-nav{
+    position:sticky;top:70px;z-index:39;
+    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+    background:var(--cream);
+    padding:10px 2px 14px;
+    margin-bottom:-14px;
+  }
+  .sub-tab{
+    display:inline-flex;align-items:center;gap:7px;
+    border:2px solid #eee6ff;background:white;color:#6a6a7a;
+    border-radius:999px;padding:8px 15px;font-weight:800;font-size:13px;
+    cursor:pointer;font-family:'Quicksand',sans-serif;white-space:nowrap;
+    transition:all .15s;
+  }
+  .sub-tab:active{transform:scale(0.95);}
+  .sub-tab .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:currentColor;opacity:0.55;}
+  .sub-tab.dot-teal{color:var(--teal-dark);}
+  .sub-tab.dot-coral{color:var(--coral);}
+  .sub-tab.dot-lavender{color:var(--lavender);}
+  .sub-tab.dot-teal.active{border-color:var(--teal);background:rgba(47,155,255,0.14);color:var(--teal-dark);}
+  .sub-tab.dot-teal.active .dot{opacity:1;}
+  .sub-tab.dot-coral.active{border-color:var(--coral);background:rgba(255,122,61,0.14);color:#d94a3d;}
+  .sub-tab.dot-coral.active .dot{opacity:1;}
+  .sub-tab.dot-lavender.active{border-color:var(--lavender);background:rgba(53,201,130,0.16);color:#6f5fe0;}
+  .sub-tab.dot-lavender.active .dot{opacity:1;}
+  .sub-tab.dot-pink{color:#d43f6e;}
+  .sub-tab.dot-pink.active{border-color:var(--pink);background:rgba(255,92,138,0.14);color:#d43f6e;}
+  .sub-tab.dot-pink.active .dot{opacity:1;}
+  .sub-tab.dot-purple{color:#6d4fd1;}
+  .sub-tab.dot-purple.active{border-color:var(--purple);background:rgba(139,92,246,0.14);color:#6d4fd1;}
+  .sub-tab.dot-purple.active .dot{opacity:1;}
+  .sub-tab.dot-amber{color:#b5750f;}
+  .sub-tab.dot-amber.active{border-color:var(--amber);background:rgba(245,166,35,0.16);color:#b5750f;}
+  .sub-tab.dot-amber.active .dot{opacity:1;}
+
+  /* ---------- TRÍ NHỚ — lật thẻ tìm cặp ---------- */
+  .memory-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+    margin-top:4px;
+  }
+  @media(max-width:420px){.memory-grid{grid-template-columns:repeat(3,1fr);}}
+  .memory-card{aspect-ratio:1/1;perspective:800px;cursor:pointer;}
+  .memory-card-inner{
+    position:relative;width:100%;height:100%;transition:transform .45s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .memory-card.flipped .memory-card-inner, .memory-card.matched .memory-card-inner{transform:rotateY(180deg);}
+  .memory-face{
+    position:absolute;inset:0;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    backface-visibility:hidden;padding:4px;
+  }
+  .memory-face-back{
+    background:linear-gradient(160deg,var(--purple),#6d4fd1);
+    font-size:1.6rem;color:#fff;box-shadow:0 4px 10px rgba(139,92,246,0.35);
+  }
+  .memory-face-front{
+    background:#fff;border:2px solid #eee6ff;transform:rotateY(180deg);
+    flex-direction:column;gap:2px;font-weight:800;
+  }
+  .memory-face-front .m-hz{font-size:1.5rem;color:var(--teal-dark);}
+  .memory-face-front .m-vn{font-size:11.5px;color:var(--ink);line-height:1.2;}
+  .memory-card.matched .memory-face-front{background:#ebfbee;border-color:#37b24d;color:#2b8a3e;}
+  .memory-card.matched .memory-face-front .m-hz{color:#2b8a3e;}
+  .memory-card.wrong-flash .memory-face-front{background:#ffe3e0;border-color:var(--coral);animation:shake .45s;}
+  .memory-stat-row{display:flex;justify-content:center;gap:18px;margin-top:12px;font-size:13px;font-weight:800;color:var(--teal-dark);}
+
+  /* ---------- GHÉP ÂM THANH ---------- */
+  .audiomatch-item.playing{border-color:var(--purple);background:rgba(139,92,246,0.14);box-shadow:0 0 0 3px rgba(139,92,246,0.22);}
+  .audiomatch-item .match-play-ico{font-size:1.7rem;}
+
+  /* ---------- BẤM NHANH — đua tốc độ ---------- */
+  .speedtap-target{
+    text-align:center;font-weight:800;font-size:1.05rem;margin:0 0 12px;
+    background:linear-gradient(160deg,#FFF7E0,#fff);border:2px dashed var(--amber);
+    border-radius:16px;padding:12px;
+  }
+  .speedtap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  @media(max-width:420px){.speedtap-grid{grid-template-columns:repeat(2,1fr);}}
+  .speedtap-bubble{
+    border:none;border-radius:16px;background:linear-gradient(160deg,#fff,#fff7ea);
+    border:2px solid #ffe2ad;padding:16px 8px;font-size:1.5rem;font-weight:800;color:var(--teal-dark);
+    cursor:pointer;transition:transform .1s;
+  }
+  .speedtap-bubble:active{transform:scale(0.92);}
+  .speedtap-bubble.tap-correct{background:#37b24d;color:#fff;border-color:#37b24d;animation:matchCorrectPop .35s ease;}
+  .speedtap-bubble.tap-wrong{background:var(--coral);color:#fff;border-color:var(--coral);animation:shake .35s;}
+  .speedtap-hud{display:flex;justify-content:space-between;font-size:13px;font-weight:800;color:var(--teal-dark);margin-bottom:8px;}
+  .speedtap-done{text-align:center;padding:20px 10px;}
+  .ex-card{scroll-margin-top:150px;}
+  .ho-card{scroll-margin-top:150px;}
+
+  /* ---------- THANH TIẾN ĐỘ TOÀN BÀI (cố định trên cùng) ---------- */
+  .lesson-progress{
+    position:fixed;top:0;left:0;width:100%;height:7px;
+    background:rgba(255,255,255,0.4);z-index:200;
+  }
+  .lesson-progress-fill{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--yellow),var(--coral),var(--lavender));
+    transition:width .5s ease;box-shadow:0 0 8px rgba(255,122,61,0.5);
+  }
+  .lesson-progress-badge{
+    position:fixed;top:12px;right:12px;z-index:200;
+    background:white;border-radius:999px;padding:6px 13px 6px 9px;
+    display:flex;align-items:center;gap:5px;
+    font-weight:800;font-size:13px;color:var(--teal-dark);
+    box-shadow:0 6px 16px rgba(43,43,61,0.2);
+  }
+  .lesson-progress-badge.pulse{animation:lpPulse .5s ease;}
+  @keyframes lpPulse{0%{transform:scale(1);}45%{transform:scale(1.2);}100%{transform:scale(1);}}
+  .lesson-progress-badge .lp-emoji{font-size:16px;}
+
+  /* tick xanh trên các nút roadmap khi hoàn thành phần đó */
+  .stop{position:relative;}
+  .stop-check{
+    position:absolute;top:-5px;right:0px;background:#37b24d;color:#fff;
+    font-size:10px;width:16px;height:16px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-weight:900;
+    box-shadow:0 2px 5px rgba(0,0,0,0.25);
+  }
+
+  /* ---------- HUY HIỆU THỬ THÁCH — phần Luyện tập ---------- */
+  .badge-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:2px 0 24px;}
+  .badge-slot{
+    position:relative;width:96px;padding:14px 8px 10px;border-radius:18px;
+    background:#F4F1FF;border:2px solid #eee6ff;text-align:center;
+    filter:grayscale(1);opacity:0.5;transition:all .35s ease;
+  }
+  .badge-slot .badge-icon{font-size:28px;line-height:1;margin-bottom:4px;}
+  .badge-slot .badge-name{font-size:11.5px;font-weight:800;color:#6a6a7a;}
+  .badge-slot .badge-lock{position:absolute;top:6px;right:9px;font-size:12px;}
+  .badge-slot.unlocked{
+    filter:none;opacity:1;border-color:var(--yellow);
+    background:linear-gradient(160deg,#FFF7E0,#fff);
+    box-shadow:0 8px 18px rgba(255,210,63,0.4);
+  }
+  .badge-slot.unlocked .badge-name{color:var(--teal-dark);}
+  .badge-slot.unlocked .badge-lock{display:none;}
+  .badge-slot.pop{animation:badgePop .55s ease;}
+  @keyframes badgePop{0%{transform:scale(1) rotate(0);}35%{transform:scale(1.28) rotate(-7deg);}60%{transform:scale(0.95) rotate(5deg);}100%{transform:scale(1) rotate(0);}}
+
+  /* ---------- COMBO — phần Đố nhanh ---------- */
+  .quiz-count.combo{color:var(--coral);}
+  .quiz-count.combo-pulse{animation:comboPulse .4s ease;}
+  @keyframes comboPulse{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
+
+  /* ---------- TOAST ăn mừng ---------- */
+  .lp-toast{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;
+    font-weight:800;font-size:13.5px;box-shadow:0 10px 24px rgba(0,0,0,0.28);
+    z-index:300;opacity:0;transition:all .35s ease;max-width:88vw;text-align:center;
+    pointer-events:none;
+  }
+  .lp-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+
+  .checklist{background:#F4F1FF;border-radius:16px;padding:16px 18px;font-size:14px;}
+  .checklist summary{
+    cursor:pointer;list-style:none;font-weight:800;font-size:14.5px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+  }
+  .checklist summary::-webkit-details-marker{display:none;}
+  .checklist summary .chevron{transition:transform .2s ease;font-size:12px;color:#8a8a9a;flex-shrink:0;}
+  .checklist[open] summary .chevron{transform:rotate(180deg);}
+  .checklist .checklist-body{margin-top:14px;}
+  .checklist ul{margin:8px 0 0;padding-left:20px;}
+  .checklist li{margin-bottom:8px;}
+  .checklist code{background:white;padding:2px 6px;border-radius:6px;font-size:12.5px;}
+
+  footer{text-align:center;margin-top:40px;padding:22px 20px 26px;}
+  .footer-divider{
+    width:60px;height:4px;border-radius:999px;margin:0 auto 14px;
+    background:linear-gradient(90deg, var(--teal), var(--coral), var(--lavender));
+  }
+  .footer-sign{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;
+    letter-spacing:0.5px;color:#a0a0b0;
+    background:#faf9ff;border:1px dashed #d8d3f2;border-radius:999px;
+    padding:7px 16px;
+  }
+</style>
+</head>
+<body>
+<script>
+  // Định nghĩa sớm để onerror của các thẻ <img> phía dưới luôn gọi được, kể cả khi ảnh lỗi rất nhanh (mở file cục bộ).
+  function imgFallback(el, label){
+    var box = el.parentElement;
+    box.classList.remove('filled');
+    box.innerHTML = '🖼️<br>' + label;
+  }
+</script>
+
+<div class="lesson-progress" id="lessonProgress">
+  <div class="lesson-progress-fill" id="lessonProgressFill"></div>
+</div>
+<div class="lesson-progress-badge" id="lessonProgressBadge">
+  <span class="lp-emoji">🦖</span><span id="lessonProgressPct">0%</span>
+</div>
+
+<div class="hero">
+  <span class="eyebrow">标准教程 YCT · Bài 3</span>
+  <h1 class="hanzi">他是谁？</h1>
+  <div class="sub">Anh ấy là ai? — Bài học hôm nay của bé 🧒</div>
+  <svg class="mascot" viewBox="0 0 100 100">
+    <!-- sao lấp lánh -->
+    <text x="4" y="18" class="sparkle sparkle-1" font-size="13">✦</text>
+    <text x="90" y="14" class="sparkle sparkle-2" font-size="9">✦</text>
+    <text x="94" y="72" class="sparkle sparkle-3" font-size="7">✦</text>
+
+    <!-- thân/vai (đế bên dưới cho đầu) -->
+    <ellipse cx="40" cy="83" rx="30" ry="15" fill="#2E9E4B" stroke="#1F7A3B" stroke-width="2"/>
+
+    <!-- tay nhỏ xíu đặc trưng của khủng long bạo chúa -->
+    <path d="M28 76 Q19 84 25 93" stroke="#2E9E4B" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M20 92 L25 96 M25 89 L25 96 M30 92 L25 96" stroke="#1F7A3B" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- đầu (hộp sọ tròn) -->
+    <circle cx="36" cy="46" r="24" fill="#4CD37E" stroke="#1F7A3B" stroke-width="2"/>
+
+    <!-- mõm dài nhô ra phía trước — đặc điểm nhận diện khủng long -->
+    <path d="M52 38 Q82 36 90 51 Q82 65 54 63 Q45 54 52 38Z" fill="#4CD37E" stroke="#1F7A3B" stroke-width="2"/>
+    <!-- hàm dưới, tạo khe miệng -->
+    <path d="M55 62 Q71 67 86 58 Q79 71 60 72 Q54 68 55 62Z" fill="#3FC470" stroke="#1F7A3B" stroke-width="2"/>
+    <!-- đường miệng -->
+    <path d="M55 61 Q70 64 86 57" stroke="#1F7A3B" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- răng nhỏ nhô ra -->
+    <path d="M63 62.5 L65 68 L67 62.5Z" fill="#fff"/>
+    <path d="M74 63 L76 68.5 L78 63Z" fill="#fff"/>
+    <!-- lỗ mũi -->
+    <ellipse cx="86" cy="49" rx="2.3" ry="1.6" fill="#1F7A3B"/>
+
+    <!-- gai lưng dọc từ gáy lên trán — đặc điểm nhận diện khủng long -->
+    <path d="M12 44 L6 38 L16 36Z" fill="#2E9E4B"/>
+    <path d="M18 30 L14 21 L25 24Z" fill="#2E9E4B"/>
+    <path d="M28 19 L26 9 L36 16Z" fill="#2E9E4B"/>
+    <path d="M40 15 L42 5 L49 13Z" fill="#2E9E4B"/>
+
+    <!-- má hồng -->
+    <ellipse cx="23" cy="55" rx="6" ry="4" fill="#FF9F9F" opacity="0.55"/>
+
+    <!-- mắt to lấp lánh, biết nháy mắt -->
+    <g class="eye-blink">
+      <ellipse cx="33" cy="42" rx="7.5" ry="8" fill="#2B2B3D"/>
+      <circle cx="35.5" cy="38" r="2.3" fill="#fff"/>
+    </g>
+  </svg>
+  <div style="font-size:13px;margin-top:6px;font-weight:700;">Khủng Long Con sẽ đồng hành cùng bé nhé!</div>
+</div>
+
+<div class="sticky-nav" id="stickyNav">
+  <div class="roadmap">
+    <button type="button" class="stop active" onclick="showPanel(1)"><span class="num">1</span>Từ mới</button>
+    <button type="button" class="stop" onclick="showPanel(2)"><span class="num">2</span>Hội thoại</button>
+    <button type="button" class="stop" onclick="showPanel(3)"><span class="num">3</span>Đoán xem</button>
+    <button type="button" class="stop" onclick="showPanel(4)"><span class="num">4</span>Bài hát</button>
+    <button type="button" class="stop" onclick="showPanel(5)"><span class="num">5</span>Câu chuyện</button>
+    <button type="button" class="stop" onclick="showPanel(6)"><span class="num">6</span>Luyện tập</button>
+  </div>
+</div>
+
+<button type="button" class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()" aria-label="Mở rộng toàn màn hình">⛶</button>
+<button type="button" class="to-top-btn" id="toTopBtn" onclick="scrollTopSmooth()" aria-label="Lên đầu trang">⬆️</button>
+
+<main>
+
+  <!-- 1. VOCAB & KEY SENTENCES -->
+  <div class="panel active" id="panel-1">
+  <section class="card" id="sec-chao">
+    <div class="card-head">
+      <div class="badge b-teal">🔑</div>
+      <div><h2>1. Câu mẫu &amp; Từ mới</h2><span class="tag">Nghe — Nhắc lại — Nhớ</span></div>
+    </div>
+    <div class="mascot-tip"><span class="m-emoji">🦖</span><span>Bấm 🔊 để nghe Khủng Long Con đọc mẫu, sau đó cho bé nhắc lại 3 lần nhé!</span></div>
+
+    <div class="song-box" style="margin-bottom:18px;">
+      <div class="song-line" onclick="playSound('他是谁','audio/keysentence1.mp3')">
+        <span class="hz hanzi">他是谁？<small>Tā shì shéi? — Anh ấy là ai?</small></span><span>🔊</span>
+      </div>
+      <div class="song-line" onclick="playSound('成龙是哪国人','audio/keysentence2.mp3')">
+        <span class="hz hanzi">成龙是哪国人？<small>Chéng Lóng shì nǎ guó rén? — Thành Long là người nước nào?</small></span><span>🔊</span>
+      </div>
+    </div>
+
+    <div class="deck-wrap">
+      <div class="deck-stage" id="deckChaoStage"></div>
+      <div class="deck-controls">
+        <button type="button" class="deck-btn deck-prev" onclick="deckPrev('Chao')">◀ Trước</button>
+        <button type="button" class="deck-btn deck-shuffle" onclick="deckShuffle('Chao')">🔀 Xáo trộn</button>
+        <button type="button" class="deck-btn deck-next" onclick="deckNext('Chao')">Sau ▶</button>
+      </div>
+      <div class="deck-count" id="deckChaoCount">1 / 7</div>
+    </div>
+  </section>
+  </div>
+
+  <!-- 3. DIALOGUES -->
+  <div class="panel" id="panel-2">
+  <div class="sub-nav" id="hoithoaiSubNav">
+    <button type="button" class="sub-tab dot-teal active" data-target="sec-hoithoai" onclick="goToHoithoaiPart('sec-hoithoai')"><span class="dot"></span>Phần 1 · Anh ấy là ai?</button>
+    <button type="button" class="sub-tab dot-coral" data-target="sec-hoithoai-2" onclick="goToHoithoaiPart('sec-hoithoai-2')"><span class="dot"></span>Phần 2 · Người nước nào?</button>
+    <button type="button" class="sub-tab dot-lavender" data-target="sec-hoithoai-3" onclick="goToHoithoaiPart('sec-hoithoai-3')"><span class="dot"></span>Phần 3 · Giới thiệu nhóm</button>
+  </div>
+
+  <section class="card ho-card" id="sec-hoithoai">
+    <div class="card-head">
+      <div class="badge b-coral">💬</div>
+      <div><span class="part-badge">Phần 1/3</span><h2>Anh ấy là ai?</h2><span class="tag">Nhập vai cùng bé</span></div>
+    </div>
+    <div class="dialogue">
+      <div class="big-img img-slot filled"><img src="images/tadoraemon.png" alt="Bạn nhỏ chỉ tay hỏi về một món đồ chơi hình Doraemon" onerror="imgFallback(this,'Bạn nhỏ chỉ tay hỏi về một món đồ chơi hình Doraemon')"></div>
+      <div class="bubble-pair">
+        <div class="bubble a" onclick="playSound('他是谁', 'audio/tashishei.mp3')"><span class="hz hanzi">他是谁？</span> <span class="py">Tā shì shéi?</span> <span class="listen-ico">🔊</span></div>
+        <div class="bubble b" onclick="playSound('他是哆啦A梦', 'audio/tashiduolaameng.mp3')"><span class="hz hanzi">他是哆啦A梦。</span> <span class="py">Tā shì Duōlā A Mèng.</span> <span class="listen-ico">🔊</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card ho-card" id="sec-hoithoai-2">
+    <div class="card-head">
+      <div class="badge b-coral">💬</div>
+      <div><span class="part-badge">Phần 2/3</span><h2>Người nước nào?</h2><span class="tag">Nhập vai cùng bé</span></div>
+    </div>
+    <div class="dialogue">
+      <div class="big-img img-slot filled"><img src="images/duolaamengnaguoren.png" alt="Bạn nhỏ hỏi về quốc tịch, phía sau là poster Doraemon" onerror="imgFallback(this,'Bạn nhỏ hỏi về quốc tịch, phía sau là poster Doraemon')"></div>
+      <div class="bubble-pair">
+        <div class="bubble a" onclick="playSound('哆啦A梦是哪国人', 'audio/duolaamengnaguoren.mp3')"><span class="hz hanzi">哆啦A梦是哪国人？</span> <span class="py">Duōlā A Mèng shì nǎ guó rén?</span> <span class="listen-ico">🔊</span></div>
+        <div class="bubble b" onclick="playSound('日本人', 'audio/ribenren.mp3')"><span class="hz hanzi">日本人。</span> <span class="py">Rìběn rén.</span> <span class="listen-ico">🔊</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card ho-card" id="sec-hoithoai-3">
+    <div class="card-head">
+      <div class="badge b-coral">💬</div>
+      <div><span class="part-badge">Phần 3/3</span><h2>Giới thiệu nhóm</h2><span class="tag">Hoạt động nhóm — Group work</span></div>
+    </div>
+    <div class="dialogue">
+      <div class="big-img img-slot filled"><img src="images/groupwork.png" alt="Nhóm học sinh đứng thành vòng tròn giới thiệu nhau" onerror="imgFallback(this,'Nhóm học sinh đứng thành vòng tròn giới thiệu nhau')"></div>
+      <div class="bubble-pair">
+        <div class="bubble a" onclick="playSound('他她是', 'audio/tataashi.mp3')"><span class="hz hanzi">他/她是……，</span> <span class="py">Tā/tā shì……,</span> <span class="listen-ico">🔊</span></div>
+        <div class="bubble b" onclick="playSound('他她是国人', 'audio/tataaguoren.mp3')"><span class="hz hanzi">他/她是……国人。</span> <span class="py">Tā/tā shì……guó rén.</span> <span class="listen-ico">🔊</span></div>
+      </div>
+    </div>
+
+    <div class="mascot-tip"><span class="m-emoji">🦖</span>
+      <span><b>Hoạt động nhóm:</b> Từng bé lần lượt giới thiệu các bạn còn lại trong nhóm — nói tên và quốc tịch của bạn theo đúng mẫu câu trên. Cô gõ nhịp trống, bé chuyền một đồ vật quanh vòng, nhịp dừng ở ai thì bé đó giới thiệu bạn ngồi cạnh mình.</span>
+    </div>
+  </section>
+  </div>
+
+  <!-- 2. GUESS WHO -->
+  <div class="panel" id="panel-3">
+  <section class="card" id="sec-so">
+    <div class="card-head">
+      <div class="badge b-yellow">🕵️</div>
+      <div><h2>3. Đoán xem đó là ai?</h2><span class="tag">Nhìn ảnh — Đoán tên — Bấm để xem đáp án</span></div>
+    </div>
+    <div class="mascot-tip"><span class="m-emoji">🦖</span><span>Nhìn hình rồi hỏi bạn cùng nhóm: <span class="hanzi">他/她是谁？他/她是哪国人？</span> — sau đó bấm 🔊 để nghe và xem đáp án nhé!</span></div>
+    <div class="deck-wrap">
+      <div class="deck-stage" id="deckSoStage"></div>
+      <div class="deck-controls">
+        <button type="button" class="deck-btn deck-prev" onclick="deckPrev('So')">◀ Trước</button>
+        <button type="button" class="deck-btn deck-shuffle" onclick="deckShuffle('So')">🔀 Xáo trộn</button>
+        <button type="button" class="deck-btn deck-next" onclick="deckNext('So')">Sau ▶</button>
+      </div>
+      <div class="deck-count" id="deckSoCount">1 / 4</div>
+    </div>
+  </section>
+  </div>
+
+  <!-- 4. SONG -->
+  <div class="panel" id="panel-4">
+  <section class="card" id="sec-baihat">
+    <div class="card-head">
+      <div class="badge b-lavender">🎵</div>
+      <div><h2>4. Bài hát "找朋友"</h2><span class="tag">Chạm từng câu để nghe, hoặc bấm ▶️ để nghe cả bài</span></div>
+    </div>
+    <div class="mascot-tip"><span class="m-emoji">🦖</span><span>Vừa hát vừa vỗ tay theo nhịp nhé! Sau khi thuộc, hãy thay tên "成龙, 中国人" bằng tên và quốc tịch của bạn cùng lớp.</span></div>
+    <div class="song-box" id="songBox"></div>
+    <div class="song-player">
+      <button type="button" class="player-btn" id="songPlayBtn" onclick="songPlay()" aria-label="Phát">▶️</button>
+      <button type="button" class="player-btn player-btn-pause" id="songPauseBtn" onclick="songPause()" aria-label="Tạm dừng">⏸️</button>
+      <input type="range" class="song-seek" id="songSeek" min="0" max="100" value="0" step="0.1">
+      <span class="song-time" id="songTime">0:00 / 0:00</span>
+    </div>
+  </section>
+  </div>
+
+  <!-- 5. MINI STORY -->
+  <div class="panel" id="panel-5">
+  <section class="card" id="sec-story">
+    <div class="card-head">
+      <div class="badge b-coral">📖</div>
+      <div><h2>5. Câu chuyện nhỏ</h2><span class="tag">Chạm ▶ để xem tiếp — Đọc và diễn lại nhé!</span></div>
+    </div>
+    <div class="mascot-tip"><span class="m-emoji">🦖</span><span>5 khung tranh nhỏ kể một câu chuyện — bấm nút nghe 🔊 ở mỗi khung, sau đó cho cả nhóm phân vai đọc và diễn lại như kịch nhé!</span></div>
+    <div id="storyStage"></div>
+    <div class="deck-controls">
+      <button type="button" class="deck-btn deck-prev" onclick="storyPrev()">◀ Trước</button>
+      <button type="button" class="deck-btn deck-shuffle" onclick="storyReplay()">🔁 Nghe lại</button>
+      <button type="button" class="deck-btn deck-next" onclick="storyNext()">Sau ▶</button>
+    </div>
+    <div class="deck-count" id="storyCount">1 / 5</div>
+  </section>
+  </div>
+
+  <!-- 6. EXERCISES — GAME HOÁ 6 màn chơi tính điểm -->
+  <div class="panel" id="panel-6">
+
+  <section class="card" id="gameIntroCard">
+    <div class="card-head">
+      <div class="badge b-yellow">🎮</div>
+      <div><h2>Đại Chiến Từ Vựng</h2><span class="tag">6 màn chơi — càng đúng nhiều, điểm càng cao!</span></div>
+    </div>
+    <div class="mascot-tip"><span class="m-emoji">🦖</span><span>Chào bé! Khủng Long Con sẽ cùng bé vượt qua <b>6 màn chơi</b>: 📝 Trắc nghiệm → 🔍 Đúng/Sai → 🧠 Trí nhớ → 🎧 Ghép âm thanh → ⚡ Bấm nhanh → ⏱️ Đố nhanh. Mỗi câu đúng được cộng điểm, càng nhanh và càng tập trung thì điểm càng cao đấy! Bé đã sẵn sàng chưa nào?</span></div>
+    <div style="text-align:center;margin-top:6px;">
+      <button type="button" class="ready-btn" onclick="startGame()" style="font-size:17px;padding:14px 34px;">🚀 Bắt đầu chơi!</button>
+    </div>
+  </section>
+
+  <div id="gameArea" style="display:none;flex-direction:column;gap:34px;">
+  <div class="game-hud" id="gameHud">
+    <span class="game-hud-score">🏆 Điểm: <b id="gameScoreLabel">0</b></span>
+    <span class="game-hud-level" id="gameLevelLabel">Màn 1/6 · Trắc nghiệm</span>
+  </div>
+  <div class="sub-nav" id="exSubNav">
+    <button type="button" class="sub-tab dot-teal active" data-target="sec-luyentap" onclick="goToExPart('sec-luyentap')"><span class="dot"></span>1 · Trắc nghiệm</button>
+    <button type="button" class="sub-tab dot-coral" data-target="sec-luyentap-2" onclick="goToExPart('sec-luyentap-2')"><span class="dot"></span>2 · Đúng/Sai</button>
+    <button type="button" class="sub-tab dot-pink" data-target="sec-luyentap-3" onclick="goToExPart('sec-luyentap-3')"><span class="dot"></span>3 · Trí nhớ</button>
+    <button type="button" class="sub-tab dot-purple" data-target="sec-luyentap-4" onclick="goToExPart('sec-luyentap-4')"><span class="dot"></span>4 · Ghép âm</button>
+    <button type="button" class="sub-tab dot-amber" data-target="sec-luyentap-5" onclick="goToExPart('sec-luyentap-5')"><span class="dot"></span>5 · Bấm nhanh</button>
+    <button type="button" class="sub-tab dot-lavender" data-target="sec-luyentap-6" onclick="goToExPart('sec-luyentap-6')"><span class="dot"></span>6 · Đố nhanh</button>
+  </div>
+  <div class="badge-row" id="badgeRow">
+    <div class="badge-slot" id="badgeSlot-match">
+      <span class="badge-lock">🔒</span>
+      <div class="badge-icon">📝</div>
+      <div class="badge-name">Trắc nghiệm</div>
+    </div>
+    <div class="badge-slot" id="badgeSlot-tf">
+      <span class="badge-lock">🔒</span>
+      <div class="badge-icon">🔍</div>
+      <div class="badge-name">Đúng/Sai</div>
+    </div>
+    <div class="badge-slot" id="badgeSlot-memory">
+      <span class="badge-lock">🔒</span>
+      <div class="badge-icon">🧠</div>
+      <div class="badge-name">Trí nhớ</div>
+    </div>
+    <div class="badge-slot" id="badgeSlot-audiomatch">
+      <span class="badge-lock">🔒</span>
+      <div class="badge-icon">🎧</div>
+      <div class="badge-name">Ghép âm</div>
+    </div>
+    <div class="badge-slot" id="badgeSlot-speedtap">
+      <span class="badge-lock">🔒</span>
+      <div class="badge-icon">⚡</div>
+      <div class="badge-name">Bấm nhanh</div>
+    </div>
+    <div class="badge-slot" id="badgeSlot-quiz">
+      <span class="badge-lock">🔒</span>
+      <div class="badge-icon">⏱️</div>
+      <div class="badge-name">Đố nhanh</div>
+    </div>
+  </div>
+  <section class="card ex-card" id="sec-luyentap">
+    <div class="card-head">
+      <div class="badge b-teal">📝</div>
+      <div><span class="part-badge">Phần 1/6</span><h2>Trắc nghiệm chọn đáp án (10 câu)</h2><span class="tag">Chọn A, B, C hoặc D — bấm vào chữ Hán để nghe phát âm · mỗi câu đúng +10 điểm</span></div>
+    </div>
+    <div id="mcqList"></div>
+    <div class="progress-line" id="matchProgress">Đã làm: 0 / 10</div>
+    <div class="progress-track"><div class="progress-fill" id="matchProgressFill"></div></div>
+  </section>
+
+  <section class="card ex-card" id="sec-luyentap-2">
+    <div class="card-head">
+      <div class="badge b-coral">🔍</div>
+      <div><span class="part-badge">Phần 2/6</span><h2>Đúng hay Sai?</h2><span class="tag">Ảnh và từ có khớp nhau không? · mỗi câu đúng +10 điểm</span></div>
+    </div>
+    <div id="tfList"></div>
+  </section>
+
+  <section class="card ex-card" id="sec-luyentap-3">
+    <div class="card-head">
+      <div class="badge b-pink">🧠</div>
+      <div><span class="part-badge">Phần 3/6</span><h2>Trí nhớ — Lật thẻ tìm cặp</h2><span class="tag">Tìm đúng cặp chữ Hán ↔ nghĩa · mỗi cặp đúng +10 điểm</span></div>
+    </div>
+    <div class="mascot-tip"><span class="m-emoji">🦖</span><span>Bấm mở 2 thẻ mỗi lượt. Nếu 1 thẻ chữ Hán và 1 thẻ nghĩa khớp nhau — đúng cặp rồi đó!</span></div>
+    <div class="memory-grid" id="memoryGrid"></div>
+    <div class="memory-stat-row"><span id="memoryPairsLabel">Đã ghép: 0 / 7 cặp</span><span id="memoryFlipsLabel">Lượt lật: 0</span></div>
+  </section>
+
+  <section class="card ex-card" id="sec-luyentap-4">
+    <div class="card-head">
+      <div class="badge b-purple">🎧</div>
+      <div><span class="part-badge">Phần 4/6</span><h2>Ghép âm thanh với hình</h2><span class="tag">Bấm 🔊 nghe rồi chọn đúng nhân vật · mỗi cặp đúng +15 điểm</span></div>
+    </div>
+    <div class="mascot-tip"><span class="m-emoji">🦖</span><span>Bấm vào loa 🔊 để nghe, rồi bấm vào hình nhân vật khớp với âm thanh vừa nghe nhé!</span></div>
+    <div class="match-wrap">
+      <div class="match-col" id="audiomatchSoundCol"></div>
+      <div class="match-col" id="audiomatchImgCol"></div>
+    </div>
+    <div class="progress-line" id="audiomatchProgress">Đã ghép: 0 / 4</div>
+    <div class="progress-track"><div class="progress-fill" id="audiomatchProgressFill"></div></div>
+  </section>
+
+  <section class="card ex-card" id="sec-luyentap-5">
+    <div class="card-head">
+      <div class="badge b-amber">⚡</div>
+      <div><span class="part-badge">Phần 5/6</span><h2>Bấm nhanh — Đua tốc độ</h2><span class="tag">45 giây, càng bấm đúng nhiều & liên tiếp càng nhiều điểm & combo</span></div>
+    </div>
+    <div class="mascot-tip"><span class="m-emoji">🦖</span><span>Đọc kỹ yêu cầu rồi bấm thật nhanh vào đúng ô chữ Hán nhé — bấm sai sẽ mất chuỗi combo đó!</span></div>
+    <div class="speedtap-hud">
+      <span id="speedtapTimerLabel">⏱ 45s</span>
+      <span id="speedtapScoreLabel">✅ Đúng: 0</span>
+      <span id="speedtapComboLabel">🔥 0</span>
+    </div>
+    <div class="timer-track"><div class="timer-fill" id="speedtapTimerFill"></div></div>
+    <div style="height:10px;"></div>
+    <div id="speedtapStage"></div>
+  </section>
+
+  <section class="card ex-card" id="sec-luyentap-6">
+    <div class="card-head">
+      <div class="badge b-lavender">⏱️</div>
+      <div><span class="part-badge">Phần 6/6</span><h2>Đếm ngược trả lời nhanh (10 câu)</h2><span class="tag">Mỗi câu 4 đáp án — 20 giây/câu · đúng +10, càng nhanh càng có thưởng tốc độ</span></div>
+    </div>
+    <div class="quiz-topbar">
+      <span class="quiz-count">Câu <span id="quizCurrentNum">–</span> / 10</span>
+      <span class="quiz-count combo" id="quizComboLabel">🔥 0</span>
+      <span class="quiz-count" id="quizTimerLabel">⏱ 20s</span>
+    </div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+    <div class="progress-track"><div class="progress-fill" id="quizProgressFill"></div></div>
+    <div style="height:14px;"></div>
+    <div id="quizStage"></div>
+  </section>
+
+  <section class="card" id="gameOverCard" style="text-align:center;display:none;">
+    <div class="badge b-yellow" style="margin:0 auto 10px;">🏆</div>
+    <h2>Hoàn thành trò chơi!</h2>
+    <div class="game-final-stars" id="gameFinalStars">⭐⭐⭐</div>
+    <p style="font-size:22px;font-weight:800;color:var(--teal-dark);margin:6px 0;">🏆 Tổng điểm: <span id="gameFinalScore">0</span> / <span id="gameMaxScore">540</span></p>
+    <p style="font-size:14px;" id="gameFinalMsg">Bé đã hoàn thành hết 6 màn chơi. Cùng dán sticker vào Sổ tay tiếng Trung nhé!</p>
+    <button type="button" class="redo-btn" onclick="resetGame()">🔁 Chơi lại từ đầu</button>
+  </section>
+  </div>
+  </div>
+
+  <details class="checklist">
+    <summary>📦 Cấu trúc thư mục cần có (chỉ cần đúng tên — không phải sửa code) <span class="chevron">▾</span></summary>
+    <div class="checklist-body">
+    <p style="margin:8px 0;">Khi up lên GitHub, đưa nguyên cả 3 thứ này lên cùng một chỗ (cùng cấp thư mục):</p>
+    <pre style="background:white;border-radius:10px;padding:12px 14px;font-size:12.5px;overflow-x:auto;margin:0 0 14px;">bai3-tashishei-yct.html
+audio/   ← chứa toàn bộ file .mp3 bên dưới
+images/  ← chứa toàn bộ file .png bên dưới</pre>
+    <p style="margin:0 0 10px;">Code đã trỏ sẵn tới đúng các đường dẫn này — chỉ cần đặt file đúng tên là ảnh/âm thanh tự hiện ra, không phải mở lại code. Thiếu file nào thì phần đó tự hiện khung/giọng đọc dự phòng, không lỗi trang.</p>
+
+    <b>🔊 File audio cần có trong thư mục <code>audio/</code> (25 file)</b>
+    <p style="margin:6px 0 4px;font-size:12.5px;font-weight:700;color:var(--teal-dark);">① Câu mẫu chính (2 file — dùng ở: thẻ 1, ô câu mẫu trên cùng)</p>
+    <ul>
+      <li><code>keysentence1.mp3</code> — 他是谁？</li>
+      <li><code>keysentence2.mp3</code> — 成龙是哪国人？</li>
+    </ul>
+    <p style="margin:10px 0 4px;font-size:12.5px;font-weight:700;color:var(--teal-dark);">② Từ mới (7 file — dùng ở: thẻ 1 lật từng chữ, và lặp lại ở bài Trắc nghiệm + Đố nhanh)</p>
+    <ul>
+      <li><code>ta.mp3</code> — 他</li>
+      <li><code>shi.mp3</code> — 是</li>
+      <li><code>shei.mp3</code> — 谁</li>
+      <li><code>na.mp3</code> — 哪</li>
+      <li><code>guo.mp3</code> — 国</li>
+      <li><code>ren.mp3</code> — 人</li>
+      <li><code>zhongguoren.mp3</code> — 中国人 (dùng chung cho các bài luyện tập có từ 中国人)</li>
+    </ul>
+    <p style="margin:10px 0 4px;font-size:12.5px;font-weight:700;color:var(--teal-dark);">③ Hội thoại (6 file mới — dùng ở: thẻ 2, chạm vào từng bong bóng để nghe)</p>
+    <ul>
+      <li><code>tashishei.mp3</code> — 他是谁？ (Phần 1 · bong bóng hỏi)</li>
+      <li><code>tashiduolaameng.mp3</code> — 他是哆啦A梦。 (Phần 1 · bong bóng đáp)</li>
+      <li><code>duolaamengnaguoren.mp3</code> — 哆啦A梦是哪国人？ (Phần 2 · bong bóng hỏi)</li>
+      <li><code>ribenren.mp3</code> — 日本人。 (Phần 2 · bong bóng đáp)</li>
+      <li><code>tataashi.mp3</code> — 他/她是……， (Phần 3 · mẫu câu giới thiệu nhóm)</li>
+      <li><code>tataaguoren.mp3</code> — 他/她是……国人。 (Phần 3 · mẫu câu giới thiệu nhóm)</li>
+    </ul>
+    <p style="margin:10px 0 4px;font-size:12.5px;font-weight:700;color:var(--teal-dark);">④ Đoán xem — 4 nhân vật hoạt hình quen thuộc (4 file — dùng ở: thẻ 3 lật từng thẻ, và lặp lại ở bài Đúng/Sai + Đố nhanh)</p>
+    <ul>
+      <li><code>pikachu.mp3</code> — 他是皮卡丘</li>
+      <li><code>doraemon.mp3</code> — 他是哆啦A梦</li>
+      <li><code>spiderman.mp3</code> — 他是蜘蛛侠</li>
+      <li><code>mickey.mp3</code> — 他是米老鼠</li>
+    </ul>
+    <p style="margin:10px 0 4px;font-size:12.5px;font-weight:700;color:var(--teal-dark);">⑤ Bài hát "找朋友" (6 file — dùng ở: thẻ 4, nghe từng câu + player nghe cả bài)</p>
+    <ul>
+      <li><code>baihat_full.mp3</code> — audio hát trọn vẹn cả bài 找朋友 (dùng cho nút ▶️ Play/⏸️ Tạm dừng + thanh tua)</li>
+      <li><code>baihat1.mp3</code> đến <code>baihat5.mp3</code> — 5 câu trong bài hát, theo đúng thứ tự lời hát (dùng khi chạm từng câu; cũng là phương án dự phòng phát nối tiếp nếu <code>baihat_full.mp3</code> chưa có)</li>
+    </ul>
+
+    <b>🖼️ File ảnh cần có trong thư mục <code>images/</code> (19 file, ảnh vuông tỉ lệ 1:1, khuyên 800×800px)</b>
+    <p style="margin:6px 0 4px;font-size:12.5px;font-weight:700;color:var(--coral);">① Từ mới (7 file)</p>
+    <ul>
+      <li><code>ta.png</code> — bạn nhỏ chỉ tay về phía một bạn nam, ý nói "anh ấy"</li>
+      <li><code>shi.png</code> — hai bạn nhỏ đứng cạnh nhau như đang giới thiệu "đây là..."</li>
+      <li><code>shei.png</code> — bạn nhỏ nhún vai, vẻ mặt thắc mắc "là ai nhỉ?"</li>
+      <li><code>na.png</code> — bạn nhỏ chỉ vào bản đồ thế giới với nhiều lá cờ</li>
+      <li><code>guo.png</code> — lá cờ Trung Quốc bay trên nền bản đồ</li>
+      <li><code>ren.png</code> — một nhóm người đứng cạnh nhau, đủ các quốc tịch</li>
+      <li><code>zhongguoren.png</code> — gia đình mặc trang phục truyền thống Trung Quốc, đứng trước Vạn Lý Trường Thành</li>
+    </ul>
+    <p style="margin:10px 0 4px;font-size:12.5px;font-weight:700;color:var(--coral);">② Hội thoại (3 file mới — dùng ở: thẻ 2)</p>
+    <ul>
+      <li><code>tadoraemon.png</code> — bạn nhỏ chỉ tay hỏi về một món đồ chơi hình Doraemon (Phần 1)</li>
+      <li><code>duolaamengnaguoren.png</code> — bạn nhỏ hỏi về quốc tịch, phía sau là poster Doraemon (Phần 2)</li>
+      <li><code>groupwork.png</code> — nhóm học sinh đứng thành vòng tròn giới thiệu nhau (Phần 3)</li>
+    </ul>
+    <p style="margin:10px 0 4px;font-size:12.5px;font-weight:700;color:var(--coral);">③ Đoán xem — 4 nhân vật hoạt hình quen thuộc (4 file)</p>
+    <ul>
+      <li><code>pikachu.png</code> — chuột điện Pikachu màu vàng</li>
+      <li><code>doraemon.png</code> — mèo máy Doraemon màu xanh</li>
+      <li><code>spiderman.png</code> — siêu anh hùng Người Nhện mặc bộ đồ đỏ đen</li>
+      <li><code>mickey.png</code> — chuột Mickey</li>
+    </ul>
+    <p style="margin:10px 0 4px;font-size:12.5px;font-weight:700;color:var(--coral);">④ Câu chuyện nhỏ — 5 khung tranh (5 file)</p>
+    <ul>
+      <li><code>story1.png</code> — bé trai chỉ vào một cuốn truyện tranh, hỏi mẹ về nhân vật trong đó (Doraemon)</li>
+      <li><code>story2.png</code> — bé trai chỉ vào hai món đồ chơi hình Pikachu và Người Nhện</li>
+      <li><code>story3.png</code> — bé trai nhận ra một món đồ chơi hình chuột Mickey</li>
+      <li><code>story4.png</code> — bé trai và các bạn đồ chơi (Doraemon, Pikachu, Người Nhện, Mickey) cùng chụp ảnh</li>
+      <li><code>story5.png</code> — hai bạn nhỏ chào nhau và tự giới thiệu tên</li>
+    </ul>
+    <p style="margin:0;font-size:12.5px;color:#8a8a9a;">Lưu ý: tên file audio và ảnh của cùng một từ được đặt <b>trùng tên gốc</b> (chỉ khác đuôi .mp3/.png) để dễ nhớ và dễ soát thiếu — ví dụ <code>ta.mp3</code> đi cùng <code>ta.png</code>. Toàn bộ 7 ảnh Từ mới và 4 ảnh Đoán xem được dùng lại ở cả 6 màn của phần Luyện tập: <b>Trắc nghiệm (10 câu)</b>, <b>Đúng/Sai (6 câu)</b>, <b>🧠 Trí nhớ (7 cặp thẻ)</b>, <b>🎧 Ghép âm thanh (4 cặp)</b>, <b>⚡ Bấm nhanh (45 giây)</b> và <b>Đố nhanh (10 câu)</b> — không cần chụp hay thu thêm file nào mới ngoài danh sách trên.</p>
+    </div>
+  </details>
+
+</main>
+
+<footer>
+  <div class="footer-divider"></div>
+  <div class="footer-sign">🦖 YCT . bài3 . yyaoo . 0387657439</div>
+</footer>
+
+<script>
+/* ---------- NAVIGATION ---------- */
+let currentAudio = null;   // audio đang phát gần nhất (qua playSound / phát nối tiếp bài hát)
+let songAllGen = 0;        // đánh dấu "thế hệ" vòng lặp phát nối tiếp bài hát, dùng để huỷ khi chuyển thẻ
+function stopAllAudio(){
+  songAllGen++; // huỷ mọi vòng lặp playSongAll() đang chạy dở
+  if(currentAudio){ try{ currentAudio.pause(); currentAudio.currentTime = 0; }catch(e){} currentAudio = null; }
+  if(typeof songFullAudio !== 'undefined' && songFullAudio){ try{ songFullAudio.pause(); }catch(e){} }
+  if('speechSynthesis' in window){ window.speechSynthesis.cancel(); }
+  if(typeof clearSongHighlight === 'function'){ clearSongHighlight(); }
+  if(typeof setSongPlayingUI === 'function'){ setSongPlayingUI(false); }
+}
+function goTo(id){
+  stopAllAudio();
+  const el = document.getElementById(id);
+  if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+}
+function showPanel(n){
+  stopAllAudio();
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  const panel = document.getElementById('panel-'+n);
+  if(panel) panel.classList.add('active');
+  document.querySelectorAll('.roadmap .stop').forEach((btn,i)=>{
+    btn.classList.toggle('active', i === n-1);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+  setTimeout(syncExOffsets, 60);
+  setTimeout(syncHoithoaiOffsets, 60);
+  if(n===2){ lessonProgress.hoithoai = true; }
+  if(n===5){ storyRender(); }
+  updateLessonProgress();
+}
+function scrollTopSmooth(){
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---------- SUB-NAV phần Luyện tập: cố định ngay dưới thanh điều hướng chính ---------- */
+function syncExOffsets(){
+  const nav = document.getElementById('stickyNav');
+  const subNav = document.getElementById('exSubNav');
+  const hud = document.getElementById('gameHud');
+  if(!nav || !subNav) return;
+  const navH = nav.getBoundingClientRect().height;
+  const hudH = (hud && hud.offsetParent!==null) ? hud.getBoundingClientRect().height + 10 : 0;
+  if(hud) hud.style.top = navH + 'px';
+  subNav.style.top = (navH + hudH) + 'px';
+  const totalOffset = navH + hudH + subNav.getBoundingClientRect().height + 14;
+  document.querySelectorAll('.ex-card').forEach(c=>{ c.style.scrollMarginTop = totalOffset + 'px'; });
+}
+function goToExPart(id){
+  syncExOffsets();
+  document.querySelectorAll('#exSubNav .sub-tab').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.target === id);
+  });
+  const levelLabel = document.getElementById('gameLevelLabel');
+  if(levelLabel) levelLabel.textContent = LEVEL_LABELS[id] || '';
+  goTo(id);
+}
+const LEVEL_LABELS = {
+  'sec-luyentap':'Màn 1/6 · Trắc nghiệm',
+  'sec-luyentap-2':'Màn 2/6 · Đúng/Sai',
+  'sec-luyentap-3':'Màn 3/6 · Trí nhớ',
+  'sec-luyentap-4':'Màn 4/6 · Ghép âm thanh',
+  'sec-luyentap-5':'Màn 5/6 · Bấm nhanh',
+  'sec-luyentap-6':'Màn 6/6 · Đố nhanh'
+};
+function updateExActiveTab(){
+  const subNav = document.getElementById('exSubNav');
+  const panel6 = document.getElementById('panel-6');
+  if(!subNav || !panel6 || !panel6.classList.contains('active')) return;
+  const nav = document.getElementById('stickyNav');
+  const offset = nav.getBoundingClientRect().height + subNav.getBoundingClientRect().height + 24;
+  const ids = ['sec-luyentap','sec-luyentap-2','sec-luyentap-3','sec-luyentap-4','sec-luyentap-5','sec-luyentap-6'];
+  let currentId = ids[0];
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top - offset <= 0){ currentId = id; }
+  });
+  subNav.querySelectorAll('.sub-tab').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.target === currentId);
+  });
+  const levelLabel = document.getElementById('gameLevelLabel');
+  if(levelLabel) levelLabel.textContent = LEVEL_LABELS[currentId] || '';
+}
+
+/* ---------- SUB-NAV phần Hội thoại: cố định ngay dưới thanh điều hướng chính ---------- */
+function syncHoithoaiOffsets(){
+  const nav = document.getElementById('stickyNav');
+  const subNav = document.getElementById('hoithoaiSubNav');
+  if(!nav || !subNav) return;
+  const navH = nav.getBoundingClientRect().height;
+  subNav.style.top = navH + 'px';
+  const totalOffset = navH + subNav.getBoundingClientRect().height + 14;
+  document.querySelectorAll('.ho-card').forEach(c=>{ c.style.scrollMarginTop = totalOffset + 'px'; });
+}
+function goToHoithoaiPart(id){
+  syncHoithoaiOffsets();
+  document.querySelectorAll('#hoithoaiSubNav .sub-tab').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.target === id);
+  });
+  goTo(id);
+}
+function updateHoithoaiActiveTab(){
+  const subNav = document.getElementById('hoithoaiSubNav');
+  const panel3 = document.getElementById('panel-3');
+  if(!subNav || !panel3 || !panel3.classList.contains('active')) return;
+  const nav = document.getElementById('stickyNav');
+  const offset = nav.getBoundingClientRect().height + subNav.getBoundingClientRect().height + 24;
+  const ids = ['sec-hoithoai','sec-hoithoai-2','sec-hoithoai-3'];
+  let currentId = ids[0];
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top - offset <= 0){ currentId = id; }
+  });
+  subNav.querySelectorAll('.sub-tab').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.target === currentId);
+  });
+}
+
+/* ---------- FULLSCREEN ---------- */
+function toggleFullscreen(){
+  const isFull = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+  if(!isFull){
+    const el = document.documentElement;
+    (el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen || function(){}).call(el);
+  } else {
+    (document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen || function(){}).call(document);
+  }
+}
+function syncFullscreenBtn(){
+  const btn = document.getElementById('fullscreenBtn');
+  if(!btn) return;
+  const isFull = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+  btn.textContent = isFull ? '⤢' : '⛶';
+  btn.classList.toggle('is-full', !!isFull);
+  btn.setAttribute('aria-label', isFull ? 'Thoát toàn màn hình' : 'Mở rộng toàn màn hình');
+}
+['fullscreenchange','webkitfullscreenchange','MSFullscreenChange'].forEach(evt=>{
+  document.addEventListener(evt, syncFullscreenBtn);
+});
+
+(function(){
+  const nav = document.getElementById('stickyNav');
+  const toTopBtn = document.getElementById('toTopBtn');
+  function onScroll(){
+    const y = window.scrollY || document.documentElement.scrollTop;
+    if(nav){ if(y > 110){ nav.classList.add('stuck'); } else { nav.classList.remove('stuck'); } }
+    if(toTopBtn){ if(y > 320){ toTopBtn.classList.add('show'); } else { toTopBtn.classList.remove('show'); } }
+    syncExOffsets();
+    updateExActiveTab();
+    syncHoithoaiOffsets();
+    updateHoithoaiActiveTab();
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+  onScroll();
+  setTimeout(onScroll, 200);
+})();
+
+/* ---------- ESCAPE AN TOÀN cho chuỗi chèn vào thuộc tính HTML / onclick ----------
+   Sửa lỗi: một số văn bản mô tả (alt, label...) có chứa dấu ngoặc kép " bên trong,
+   khi chèn thẳng vào alt="..." hoặc onclick="...('...')" sẽ làm hỏng cú pháp thẻ HTML,
+   gây lỗi "Invalid or unexpected token" và khiến ảnh/nút bấm không hoạt động
+   trên mọi trình duyệt (đặc biệt hay lộ ra trên điện thoại). */
+function escHtml(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escJs(s){
+  return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+}
+
+/* ---------- SPEECH (giọng máy — dùng khi chưa có file audio thật) ---------- */
+function speak(text){
+  if(!('speechSynthesis' in window)){alert('Trình duyệt này chưa hỗ trợ đọc giọng nói. Hãy dùng Chrome nhé.');return;}
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.75;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+/* ---------- PHÁT ÂM THANH ----------
+   Ưu tiên phát file audio thật (audio/*.mp3) nếu đã chèn theo hướng dẫn cuối trang.
+   Nếu chưa có file (hoặc lỗi tải), tự động phát giọng đọc máy để bé vẫn nghe được từ. */
+function playSound(text, audioSrc){
+  if(currentAudio){ try{ currentAudio.pause(); currentAudio.currentTime = 0; }catch(e){} currentAudio = null; }
+  if('speechSynthesis' in window){ window.speechSynthesis.cancel(); }
+  if(audioSrc){
+    const audio = new Audio(audioSrc);
+    currentAudio = audio;
+    audio.addEventListener('error', ()=> speak(text));
+    audio.play().catch(()=> speak(text));
+  } else {
+    speak(text);
+  }
+}
+
+/* ---------- LESSON PROGRESS TRACKING (thanh tiến độ toàn bài + huy hiệu Luyện tập) ---------- */
+const lessonProgress = {
+  chao: new Set(), so: new Set(), hoithoai: false, baihat: new Set(), truyen: new Set(),
+  matching: 0, tf: new Set(), quiz: false,
+  memory: false, audiomatch: false, speedtap: false
+};
+const badgeUnlockedState = {match:false, tf:false, memory:false, audiomatch:false, speedtap:false, quiz:false};
+let allBadgesCelebrated = false, lessonCelebrated = false;
+
+function lessonPercent(){
+  const chaoPct = Math.min(lessonProgress.chao.size/7, 1);
+  const soPct = Math.min(lessonProgress.so.size/4, 1);
+  const hoithoaiPct = lessonProgress.hoithoai ? 1 : 0;
+  const baihatPct = Math.min(lessonProgress.baihat.size/5, 1);
+  const truyenPct = Math.min(lessonProgress.truyen.size/5, 1);
+  const luyentapPct = (
+    Math.min(lessonProgress.matching/10,1) + Math.min(lessonProgress.tf.size/6,1) +
+    (lessonProgress.memory?1:0) + (lessonProgress.audiomatch?1:0) +
+    (lessonProgress.speedtap?1:0) + (lessonProgress.quiz?1:0)
+  ) / 6;
+  return Math.round(((chaoPct+soPct+hoithoaiPct+baihatPct+truyenPct+luyentapPct)/6)*100);
+}
+function updateLessonProgress(){
+  const pct = lessonPercent();
+  const fill = document.getElementById('lessonProgressFill');
+  const label = document.getElementById('lessonProgressPct');
+  const badge = document.getElementById('lessonProgressBadge');
+  if(fill) fill.style.width = pct+'%';
+  if(label) label.textContent = pct+'%';
+  if(badge){ badge.classList.remove('pulse'); void badge.offsetWidth; badge.classList.add('pulse'); }
+  updateStopChecks();
+  updateExBadges();
+  if(pct>=100) celebrateLessonComplete();
+}
+function updateStopChecks(){
+  const doneMap = {
+    1: lessonProgress.chao.size>=7,
+    2: lessonProgress.hoithoai,
+    3: lessonProgress.so.size>=4,
+    4: lessonProgress.baihat.size>=5,
+    5: lessonProgress.truyen.size>=5,
+    6: (lessonProgress.matching>=10 && lessonProgress.tf.size>=6 && lessonProgress.memory && lessonProgress.audiomatch && lessonProgress.speedtap && lessonProgress.quiz)
+  };
+  document.querySelectorAll('.roadmap .stop').forEach((btn,i)=>{
+    const n = i+1;
+    let check = btn.querySelector('.stop-check');
+    if(doneMap[n]){
+      if(!check){ check = document.createElement('span'); check.className='stop-check'; check.textContent='✓'; btn.appendChild(check); }
+    } else if(check){ check.remove(); }
+  });
+}
+function updateExBadges(){
+  const map = {
+    match: lessonProgress.matching>=10,
+    tf: lessonProgress.tf.size>=6,
+    memory: lessonProgress.memory,
+    audiomatch: lessonProgress.audiomatch,
+    speedtap: lessonProgress.speedtap,
+    quiz: lessonProgress.quiz
+  };
+  Object.keys(map).forEach(key=>{
+    const el = document.getElementById('badgeSlot-'+key);
+    if(!el) return;
+    if(map[key]){
+      el.classList.add('unlocked');
+      if(!badgeUnlockedState[key]){
+        el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+        burstConfetti(el);
+        badgeUnlockedState[key] = true;
+      }
+    }
+  });
+  if(Object.values(map).every(Boolean)){ celebrateAllBadges(); showGameOver(); }
+}
+function burstConfetti(anchorEl){
+  const rect = anchorEl.getBoundingClientRect();
+  const emojis = ['🎉','⭐','✨','🌟'];
+  for(let k=0;k<8;k++){
+    const s = document.createElement('span');
+    s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.cssText = `position:fixed;left:${rect.left+rect.width/2}px;top:${rect.top+rect.height/2}px;font-size:${14+Math.random()*10}px;pointer-events:none;z-index:300;transition:transform .9s ease-out, opacity .9s ease-out;`;
+    document.body.appendChild(s);
+    const dx=(Math.random()-0.5)*160, dy=-60-Math.random()*80, rot=(Math.random()-0.5)*180;
+    requestAnimationFrame(()=>{ s.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`; s.style.opacity='0'; });
+    setTimeout(()=>s.remove(), 950);
+  }
+}
+function showToast(msg){
+  let t = document.getElementById('lpToast');
+  if(!t){ t=document.createElement('div'); t.id='lpToast'; t.className='lp-toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  requestAnimationFrame(()=>t.classList.add('show'));
+  clearTimeout(t._hideTimer);
+  t._hideTimer = setTimeout(()=>t.classList.remove('show'), 3200);
+}
+function celebrateAllBadges(){
+  if(allBadgesCelebrated) return;
+  allBadgesCelebrated = true;
+  const row = document.getElementById('badgeRow');
+  if(row) burstConfetti(row);
+  showToast('🏆 Xuất sắc! Bé đã mở khoá cả 6 huy hiệu Luyện tập!');
+}
+function celebrateLessonComplete(){
+  if(lessonCelebrated) return;
+  lessonCelebrated = true;
+  const badge = document.getElementById('lessonProgressBadge');
+  if(badge) burstConfetti(badge);
+  showToast('🎊 Tuyệt vời! Bé đã hoàn thành trọn vẹn Bài 3!');
+}
+
+/* ---------- GAME ENGINE — Đại Chiến Từ Vựng: điểm số · bắt đầu · làm lại · tổng kết ---------- */
+let gameScore = 0;
+const GAME_MAX_SCORE = 540; // ước lượng: 100(trắc nghiệm)+60(đúng/sai)+70(trí nhớ)+60(ghép âm)+~100(bấm nhanh)+~150(đố nhanh)
+function addScore(pts){
+  gameScore += pts;
+  const scoreLabel = document.getElementById('gameScoreLabel');
+  if(!scoreLabel) return;
+  scoreLabel.textContent = gameScore;
+  const wrap = scoreLabel.closest('.game-hud-score');
+  if(wrap){ wrap.classList.remove('score-pop'); void wrap.offsetWidth; wrap.classList.add('score-pop'); }
+}
+function startGame(){
+  document.getElementById('gameIntroCard').style.display = 'none';
+  document.getElementById('gameArea').style.display = 'flex';
+  setTimeout(()=>{ syncExOffsets(); goToExPart('sec-luyentap'); }, 60);
+}
+function showGameOver(){
+  const card = document.getElementById('gameOverCard');
+  if(!card || card.style.display === 'block') return;
+  document.getElementById('gameFinalScore').textContent = gameScore;
+  document.getElementById('gameMaxScore').textContent = GAME_MAX_SCORE;
+  const pct = gameScore / GAME_MAX_SCORE;
+  let stars = '⭐', msg = 'Bé đã hoàn thành hết 6 màn chơi — cố lên lần sau nhé!';
+  if(pct >= 0.85){ stars = '⭐⭐⭐'; msg = 'Xuất sắc! Bé đã chinh phục trọn vẹn 6 màn chơi!'; }
+  else if(pct >= 0.6){ stars = '⭐⭐'; msg = 'Rất tốt! Bé đã hoàn thành hết 6 màn chơi.'; }
+  document.getElementById('gameFinalStars').textContent = stars;
+  document.getElementById('gameFinalMsg').textContent = msg;
+  card.style.display = 'block';
+  setTimeout(()=>{ card.scrollIntoView({behavior:'smooth', block:'start'}); }, 200);
+}
+function resetGame(){
+  gameScore = 0;
+  const scoreLabel = document.getElementById('gameScoreLabel');
+  if(scoreLabel) scoreLabel.textContent = '0';
+  document.getElementById('gameOverCard').style.display = 'none';
+
+  mcqAnswered = new Set();
+  renderMcqList();
+  document.getElementById('matchProgress').textContent = `Đã làm: 0 / ${mcqData.length}`;
+  document.getElementById('matchProgressFill').style.width = '0%';
+  lessonProgress.matching = 0;
+
+  lessonProgress.tf = new Set();
+  renderTfList();
+
+  lessonProgress.memory = false;
+  initMemoryGame();
+
+  lessonProgress.audiomatch = false;
+  initAudioMatch();
+
+  lessonProgress.speedtap = false;
+  renderSpeedtapReady();
+
+  lessonProgress.quiz = false;
+  renderReadyCard();
+
+  Object.keys(badgeUnlockedState).forEach(k=>{
+    badgeUnlockedState[k] = false;
+    const el = document.getElementById('badgeSlot-'+k);
+    if(el) el.classList.remove('unlocked','pop');
+  });
+  allBadgesCelebrated = false;
+
+  updateLessonProgress();
+  document.getElementById('gameIntroCard').style.display = '';
+  document.getElementById('gameArea').style.display = 'none';
+  document.getElementById('gameIntroCard').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ---------- FLASHCARD DECK ENGINE ---------- */
+const decks = {};
+function renderGreetingCard(c){
+  return `<div class="big-item">
+      <div class="big-text">
+        <div class="hz hanzi">${c.hz}</div>
+        <div class="py">${c.py}</div>
+        <div class="vn">${c.vn}</div>
+        <button class="speak-btn" onclick="playSound('${escJs(c.hz.replace(/[！？]/g,''))}','${escJs(c.audio)}')">🔊 Nghe</button>
+      </div>
+      <div class="big-img img-slot filled"><img src="${c.img}" alt="${escHtml(c.alt)}" onerror="imgFallback(this,'Ảnh vuông: ${escJs(c.alt)}')"></div>
+    </div>`;
+}
+function renderGuessCard(g){
+  return `<div class="big-item">
+      <div class="big-img img-slot filled"><img src="${g.img}" alt="${escHtml(g.alt)}" onerror="imgFallback(this,'Ảnh vuông: ${escJs(g.alt)}')"></div>
+      <div class="big-text">
+        <div class="py" style="font-size:16px;font-weight:700;">${g.q}</div>
+        <div class="guess-answer" style="display:none;margin-top:4px;">
+          <div class="hz hanzi">${g.hz}</div>
+          <div class="vn">${g.vn}</div>
+        </div>
+        <button class="speak-btn" onclick="revealGuess(this,'${escJs(g.speak)}','${escJs(g.audio)}')">🔎 Xem đáp án</button>
+      </div>
+    </div>`;
+}
+function revealGuess(btn, text, audio){
+  const box = btn.parentElement.querySelector('.guess-answer');
+  if(box){ box.style.display='block'; }
+  playSound(text, audio);
+}
+function makeDeck(name, items, renderCard, onView){
+  let order = items.map((_,i)=>i);
+  let idx = 0;
+  const stage = document.getElementById('deck'+name+'Stage');
+  const countEl = document.getElementById('deck'+name+'Count');
+  function render(){
+    const n = order.length;
+    const peekLevels = Math.min(2, n-1);
+    let html = '';
+    for(let d=peekLevels; d>=1; d--){
+      html += `<div class="deck-card deck-peek" style="--peek:${d}">${renderCard(items[order[(idx+d)%n]])}</div>`;
+    }
+    html += `<div class="deck-card deck-top">${renderCard(items[order[idx]])}</div>`;
+    stage.innerHTML = html;
+    countEl.textContent = `${idx+1} / ${n}`;
+    if(onView) onView(order[idx]);
+  }
+  render();
+  return {
+    next(){ idx = (idx+1)%order.length; render(); },
+    prev(){ idx = (idx-1+order.length)%order.length; render(); },
+    shuffle(){ order = shuffle(order); idx = 0; render(); }
+  };
+}
+function deckNext(name){ stopAllAudio(); decks[name].next(); }
+function deckPrev(name){ stopAllAudio(); decks[name].prev(); }
+function deckShuffle(name){ stopAllAudio(); decks[name].shuffle(); }
+
+/* ---------- 1. GREETING DECK (4 câu chào + 3 từ đơn cấu thành câu) ---------- */
+const greetingCards = [
+  {hz:'他', py:'tā', vn:'anh ấy, cậu ấy, hắn', audio:'audio/ta.mp3', img:'images/ta.png', alt:'bạn nhỏ chỉ tay về phía một bạn nam, ý nói "anh ấy"'},
+  {hz:'是', py:'shì', vn:'là, thì', audio:'audio/shi.mp3', img:'images/shi.png', alt:'hai bạn nhỏ đứng cạnh nhau như đang giới thiệu "đây là..."'},
+  {hz:'谁', py:'shéi', vn:'ai', audio:'audio/shei.mp3', img:'images/shei.png', alt:'bạn nhỏ nhún vai, vẻ mặt thắc mắc "là ai nhỉ?"'},
+  {hz:'哪', py:'nǎ', vn:'nào', audio:'audio/na.mp3', img:'images/na.png', alt:'bạn nhỏ chỉ vào bản đồ thế giới với nhiều lá cờ, ý hỏi "nước nào"'},
+  {hz:'国', py:'guó', vn:'nước, quốc gia', audio:'audio/guo.mp3', img:'images/guo.png', alt:'lá cờ Trung Quốc bay trên nền bản đồ'},
+  {hz:'人', py:'rén', vn:'người', audio:'audio/ren.mp3', img:'images/ren.png', alt:'một nhóm người đứng cạnh nhau, đủ các quốc tịch'},
+  {hz:'中国人', py:'Zhōngguó rén', vn:'người Trung Quốc', audio:'audio/zhongguoren.mp3', img:'images/zhongguoren.png', alt:'gia đình mặc trang phục truyền thống Trung Quốc, đứng trước Vạn Lý Trường Thành'}
+];
+decks.Chao = makeDeck('Chao', greetingCards, renderGreetingCard, (i)=>{ lessonProgress.chao.add(i); updateLessonProgress(); });
+
+/* ---------- 2. GUESS-WHO DECK (4 nhân vật hoạt hình quen thuộc với bé trai) ---------- */
+const numbers = [
+  {q:'他是谁？他是哪国人？', hz:'他是皮卡丘，他是日本人。', vn:'Đó là Pikachu, đến từ Nhật Bản.', speak:'他是皮卡丘', audio:'audio/pikachu.mp3', img:'images/pikachu.png', alt:'chuột điện Pikachu màu vàng'},
+  {q:'他是谁？他是哪国人？', hz:'他是哆啦A梦，他是日本人。', vn:'Đó là Doraemon, đến từ Nhật Bản.', speak:'他是哆啦A梦', audio:'audio/doraemon.mp3', img:'images/doraemon.png', alt:'mèo máy Doraemon màu xanh'},
+  {q:'他是谁？他是哪国人？', hz:'他是蜘蛛侠，他是美国人。', vn:'Đó là Người Nhện, đến từ nước Mỹ.', speak:'他是蜘蛛侠', audio:'audio/spiderman.mp3', img:'images/spiderman.png', alt:'siêu anh hùng Người Nhện mặc bộ đồ đỏ đen'},
+  {q:'他是谁？他是哪国人？', hz:'他是米老鼠，他是美国人。', vn:'Đó là chuột Mickey, đến từ nước Mỹ.', speak:'他是米老鼠', audio:'audio/mickey.mp3', img:'images/mickey.png', alt:'chuột Mickey'}
+];
+decks.So = makeDeck('So', numbers, renderGuessCard, (i)=>{ lessonProgress.so.add(i); updateLessonProgress(); });
+
+/* ---------- 5. MINI STORY (5 khung tranh — chỉ 4 nhân vật quen thuộc) ---------- */
+const storyFrames = [
+  {img:'images/story1.png', alt:'bé trai chỉ vào một cuốn truyện tranh, hỏi mẹ về nhân vật trong đó', lines:[
+    {hz:'妈妈，他是谁？', py:"Māma, tā shì shéi?"},
+    {hz:'他是哆啦A梦。', py:'Tā shì Duōlā A Mèng.'}
+  ]},
+  {img:'images/story2.png', alt:'bé trai chỉ vào hai món đồ chơi hình Pikachu và Người Nhện', lines:[
+    {hz:'他是谁？', py:'Tā shì shéi?'},
+    {hz:'他是皮卡丘。', py:'Tā shì Píkǎqiū.'},
+    {hz:'他呢？', py:'Tā ne?'},
+    {hz:'他是蜘蛛侠。', py:'Tā shì Zhīzhūxiá.'}
+  ]},
+  {img:'images/story3.png', alt:'bé trai nhận ra một món đồ chơi hình chuột Mickey', lines:[
+    {hz:'我认识他，他是米老鼠。', py:"Wǒ rènshi tā, tā shì Mǐlǎoshǔ."}
+  ]},
+  {img:'images/story4.png', alt:'bé trai hỏi các bạn đồ chơi là người nước nào, rồi cùng chụp ảnh', lines:[
+    {hz:'他们是哪国人？', py:'Tāmen shì nǎ guó rén?'},
+    {hz:'哆啦A梦、皮卡丘是日本人，蜘蛛侠、米老鼠是美国人。', py:'Duōlā A Mèng, Píkǎqiū shì Rìběn rén, Zhīzhūxiá, Mǐlǎoshǔ shì Měiguó rén.'},
+    {hz:'一，二，三，茄子！', py:'Yī, èr, sān, qiézi!'}
+  ]},
+  {img:'images/story5.png', alt:'hai bạn nhỏ chào nhau và tự giới thiệu tên', lines:[
+    {hz:'你好，我是小龙。', py:'Nǐ hǎo, wǒ shì Xiǎolóng.'},
+    {hz:'你好！你好！', py:'Nǐ hǎo! Nǐ hǎo!'}
+  ]}
+];
+let storyIdx = 0;
+function storyRender(){
+  const f = storyFrames[storyIdx];
+  const linesHtml = f.lines.map((l,i)=>{
+    const side = i%2===0 ? 'a' : 'b';
+    return `<div class="bubble ${side}" onclick="playSound('${escJs(l.hz.replace(/[，。！]/g,''))}','')"><span class="hz hanzi">${l.hz}</span> <span class="py">${l.py}</span> <span class="listen-ico">🔊</span></div>`;
+  }).join('');
+  document.getElementById('storyStage').innerHTML = `
+    <div class="dialogue">
+      <div class="big-img img-slot filled"><img src="${f.img}" alt="${escHtml(f.alt)}" onerror="imgFallback(this,'Ảnh vuông: ${escJs(f.alt)}')"></div>
+      <div class="bubble-pair">${linesHtml}</div>
+    </div>`;
+  document.getElementById('storyCount').textContent = `${storyIdx+1} / ${storyFrames.length}`;
+  lessonProgress.truyen.add(storyIdx); updateLessonProgress();
+}
+function storyNext(){ stopAllAudio(); storyIdx = (storyIdx+1)%storyFrames.length; storyRender(); }
+function storyPrev(){ stopAllAudio(); storyIdx = (storyIdx-1+storyFrames.length)%storyFrames.length; storyRender(); }
+function storyReplay(){ storyRender(); }
+storyRender();
+
+/* ---------- SONG ---------- */
+const songLines = [
+  {hz:'找呀找呀找朋友，', py:'Zhǎo ya zhǎo ya zhǎo péngyou,', audio:'audio/baihat1.mp3'},
+  {hz:'找到一个好朋友，', py:'Zhǎodào yí ge hǎo péngyou,', audio:'audio/baihat2.mp3'},
+  {hz:'成龙，中国人，', py:'Chéng Lóng, Zhōngguó rén,', audio:'audio/baihat3.mp3'},
+  {hz:'你是我的好朋友。', py:'Nǐ shì wǒ de hǎo péngyou.', audio:'audio/baihat4.mp3'},
+  {hz:'再见！', py:'Zàijiàn!', audio:'audio/baihat5.mp3'}
+];
+const songBox = document.getElementById('songBox');
+songLines.forEach((l,i)=>{
+  const div = document.createElement('div');
+  div.className='song-line';
+  div.id = 'song-'+i;
+  div.innerHTML = `<span class="hz hanzi">${l.hz}<small>${l.py}</small></span><span>🔊</span>`;
+  div.onclick = ()=>{clearSongHighlight(); div.classList.add('playing'); playSound(l.hz, l.audio); lessonProgress.baihat.add(i); updateLessonProgress();};
+  songBox.appendChild(div);
+});
+function clearSongHighlight(){document.querySelectorAll('.song-line').forEach(el=>el.classList.remove('playing'));}
+
+/* ---------- SONG FULL-TRACK PLAYER (nút play/tạm dừng + thanh tua) ---------- */
+const songFullAudio = new Audio('audio/baihat_full.mp3');
+const songPlayBtn = document.getElementById('songPlayBtn');
+const songPauseBtn = document.getElementById('songPauseBtn');
+const songSeek = document.getElementById('songSeek');
+const songTime = document.getElementById('songTime');
+let songFullBroken = false, songSeeking = false;
+
+function fmtTime(s){
+  if(!isFinite(s) || s<0) return '0:00';
+  const m = Math.floor(s/60), sec = Math.floor(s%60);
+  return m+':'+String(sec).padStart(2,'0');
+}
+function updateSeekFill(){
+  const pct = songSeek.max>0 ? (songSeek.value/songSeek.max)*100 : 0;
+  songSeek.style.background = `linear-gradient(to right, var(--lavender) ${pct}%, #f0e4c8 ${pct}%)`;
+}
+function setSongPlayingUI(isPlaying){
+  songPauseBtn.classList.toggle('active', isPlaying);
+}
+function songPlay(){
+  if(songFullBroken){ playSongAll(); setSongPlayingUI(true); return; } // chưa có file audio/baihat_full.mp3 -> phát nối tiếp từng câu để bé vẫn nghe được
+  songFullAudio.play().catch(()=>{ songFullBroken=true; playSongAll(); setSongPlayingUI(true); });
+}
+function songPause(){
+  songFullAudio.pause();
+  songAllGen++; // dừng luôn vòng lặp phát nối tiếp (fallback) nếu đang chạy
+  if(currentAudio){ try{ currentAudio.pause(); }catch(e){} }
+  if('speechSynthesis' in window){ window.speechSynthesis.cancel(); }
+  setSongPlayingUI(false);
+}
+songFullAudio.addEventListener('play', ()=> setSongPlayingUI(true));
+songFullAudio.addEventListener('pause', ()=> setSongPlayingUI(false));
+songFullAudio.addEventListener('ended', ()=>{ setSongPlayingUI(false); clearSongHighlight(); lessonProgress.baihat=new Set(songLines.map((_,i)=>i)); updateLessonProgress(); });
+songFullAudio.addEventListener('error', ()=>{ songFullBroken=true; });
+songFullAudio.addEventListener('loadedmetadata', ()=>{ songSeek.max = songFullAudio.duration; songTime.textContent = fmtTime(0)+' / '+fmtTime(songFullAudio.duration); });
+songFullAudio.addEventListener('timeupdate', ()=>{
+  if(!songSeeking) songSeek.value = songFullAudio.currentTime;
+  songTime.textContent = fmtTime(songFullAudio.currentTime)+' / '+fmtTime(songFullAudio.duration||0);
+  updateSeekFill();
+});
+songSeek.addEventListener('input', ()=>{ songSeeking=true; updateSeekFill(); songTime.textContent = fmtTime(songSeek.value)+' / '+fmtTime(songFullAudio.duration||0); });
+songSeek.addEventListener('change', ()=>{ songFullAudio.currentTime = Number(songSeek.value); songSeeking=false; });
+
+function playSongAll(){
+  let i=0;
+  const myGen = ++songAllGen; // thế hệ riêng của lần gọi này — nếu stopAllAudio() tăng songAllGen thì vòng lặp tự dừng
+  clearSongHighlight();
+  function next(){
+    if(myGen !== songAllGen) return; // đã bị huỷ (chuyển thẻ / lật thẻ khác trong lúc đang phát)
+    if(i>=songLines.length){ clearSongHighlight(); setSongPlayingUI(false); return; }
+    clearSongHighlight();
+    const el = document.getElementById('song-'+i);
+    el.classList.add('playing');
+    lessonProgress.baihat.add(i); updateLessonProgress();
+    const line = songLines[i];
+    const audio = new Audio(line.audio);
+    currentAudio = audio;
+    const goNext = ()=>{ i++; setTimeout(next, 250); };
+    audio.addEventListener('error', ()=>{
+      if(myGen !== songAllGen) return;
+      const u = new SpeechSynthesisUtterance(line.hz);
+      u.lang='zh-CN'; u.rate=0.75;
+      u.onend = goNext;
+      window.speechSynthesis.speak(u);
+    });
+    audio.onended = goNext;
+    audio.play().catch(()=>{
+      if(myGen !== songAllGen) return;
+      const u = new SpeechSynthesisUtterance(line.hz);
+      u.lang='zh-CN'; u.rate=0.75;
+      u.onend = goNext;
+      window.speechSynthesis.speak(u);
+    });
+  }
+  window.speechSynthesis.cancel();
+  next();
+}
+
+/* ---------- TRẮC NGHIỆM (10 câu, đa dạng dạng câu hỏi) ---------- */
+// xáo trộn mảng — dùng chung cho quiz, deck, và trắc nghiệm
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+const mcqData = [
+  {qHanzi:'他', audio:'audio/ta.mp3', question:'nghĩa là gì?', opts:['Anh ấy, cậu ấy','Ai','Nước, quốc gia','Người'], correct:0},
+  {qHanzi:'是', audio:'audio/shi.mp3', question:'nghĩa là gì?', opts:['Nào','Là, thì','Ai','Người'], correct:1},
+  {qHanzi:'谁', audio:'audio/shei.mp3', question:'nghĩa là gì?', opts:['Người','Nước, quốc gia','Ai','Là, thì'], correct:2},
+  {qHanzi:'哪', audio:'audio/na.mp3', question:'nghĩa là gì?', opts:['Ai','Người','Là, thì','Nào'], correct:3},
+  {qHanzi:'国', audio:'audio/guo.mp3', question:'nghĩa là gì?', opts:['Nào','Ai','Nước, quốc gia','Người'], correct:2},
+  {qHanzi:'人', audio:'audio/ren.mp3', question:'nghĩa là gì?', opts:['Nước, quốc gia','Người','Là, thì','Nào'], correct:1},
+  {qText:'"Người Trung Quốc" — tiếng Trung nói thế nào?', opts:['中国人','中国','国人','是中国'], optsHanzi:true,
+    optAudio:['audio/zhongguoren.mp3','','',''], correct:0},
+  {qHanzi:'他是谁？', audio:'audio/tashishei.mp3', question:'nghĩa là gì?', opts:['Anh ấy là ai?','Anh ấy là Thành Long.','Anh ấy là người nước nào?','Người Trung Quốc'], correct:0},
+  {qHanzi:'成龙是哪国人？', audio:'audio/keysentence2.mp3', question:'nghĩa là gì?', opts:['Thành Long là người nước nào?','Anh ấy là ai?','Anh ấy là Thành Long.','Người Trung Quốc'], correct:0},
+  {qImg:'images/na.png', qImgAlt:'bạn nhỏ chỉ vào bản đồ thế giới với nhiều lá cờ', question:'Nhìn hình, chọn từ tiếng Trung phù hợp.', opts:['哪','国','人','是'], optsHanzi:true,
+    optAudio:['audio/na.mp3','audio/guo.mp3','audio/ren.mp3','audio/shi.mp3'], correct:0}
+];
+const LETTERS = ['A','B','C','D'];
+function renderMcqList(){
+  const wrap = document.getElementById('mcqList');
+  wrap.innerHTML = mcqData.map((q,qi)=>{
+    let stemHtml = '';
+    if(q.qHanzi){
+      stemHtml = `<p class="stem"><span class="hanzi" style="cursor:pointer;" onclick="playSound('${escJs(q.qHanzi)}','${escJs(q.audio||'')}')">${q.qHanzi} <span class="listen-ico">🔊</span></span> ${q.question||''}</p>`;
+    } else if(q.qImg){
+      stemHtml = `<p class="stem">${q.question||''}</p><div class="img-slot quiz-img-slot filled"><img src="${q.qImg}" alt="${escHtml(q.qImgAlt||'')}" onerror="imgFallback(this,'${escJs(q.qImgAlt||'')}')"></div>`;
+    } else {
+      stemHtml = `<p class="stem">${q.qText||''}</p>`;
+    }
+    const optsHtml = q.opts.map((o,oi)=>{
+      const inner = q.optsHanzi
+        ? `<span class="hanzi">${o}</span>${q.optAudio && q.optAudio[oi] ? ` <span class="listen-ico" onclick="event.stopPropagation();playSound('${escJs(o)}','${escJs(q.optAudio[oi])}')">🔊</span>` : ''}`
+        : o;
+      return `<button type="button" class="opt-btn" data-oi="${oi}" onclick="answerMcq(this,${qi},${oi})"><b>${LETTERS[oi]}.</b> ${inner}</button>`;
+    }).join('');
+    return `<div class="quiz-card" style="margin-bottom:16px;" id="mcqCard-${qi}">
+        <span class="quiz-badge">Câu ${qi+1} / ${mcqData.length}</span>
+        ${stemHtml}
+        <div class="quiz-opts">${optsHtml}</div>
+      </div>`;
+  }).join('');
+}
+let mcqAnswered = new Set();
+function answerMcq(btn, qi, oi){
+  if(mcqAnswered.has(qi)) return;
+  mcqAnswered.add(qi);
+  const card = document.getElementById('mcqCard-'+qi);
+  const buttons = card.querySelectorAll('.opt-btn');
+  buttons.forEach(b=>{ b.onclick = (e)=>e.stopPropagation(); });
+  const correct = mcqData[qi].correct;
+  buttons[correct].classList.add('correct');
+  if(oi !== correct){ btn.classList.add('wrong'); } else { addScore(10); }
+  document.getElementById('matchProgress').textContent = `Đã làm: ${mcqAnswered.size} / ${mcqData.length}`;
+  document.getElementById('matchProgressFill').style.width = (mcqAnswered.size/mcqData.length*100)+'%';
+  lessonProgress.matching = mcqAnswered.size; updateLessonProgress();
+}
+renderMcqList();
+
+/* ---------- TRUE / FALSE ---------- */
+const tfData = [
+  {hz:'是', py:'shì', label:'hình hai bạn nhỏ đứng cạnh nhau như đang giới thiệu "đây là..."', img:'images/shi.png', audio:'audio/shi.mp3', correct:true},
+  {hz:'谁', py:'shéi', label:'hình hai bạn nhỏ đứng cạnh nhau như đang giới thiệu "đây là..."', img:'images/shi.png', audio:'audio/shei.mp3', correct:false},
+  {hz:'哪', py:'nǎ', label:'hình bạn nhỏ chỉ vào bản đồ thế giới với nhiều lá cờ', img:'images/na.png', audio:'audio/na.mp3', correct:true},
+  {hz:'人', py:'rén', label:'hình bạn nhỏ chỉ vào bản đồ thế giới với nhiều lá cờ', img:'images/na.png', audio:'audio/ren.mp3', correct:false},
+  {hz:'中国人', py:'Zhōngguó rén', label:'hình gia đình mặc trang phục truyền thống Trung Quốc trước Vạn Lý Trường Thành', img:'images/zhongguoren.png', audio:'audio/zhongguoren.mp3', correct:true},
+  {hz:'皮卡丘', py:'Píkǎqiū', label:'hình chuột Mickey', img:'images/mickey.png', audio:'audio/pikachu.mp3', correct:false}
+];
+function renderTfList(){
+  const tfList = document.getElementById('tfList');
+  tfList.innerHTML = '';
+  tfData.forEach((t,i)=>{
+    const row = document.createElement('div');
+    row.className='tf-item';
+    row.innerHTML = `
+      <div class="big-item">
+        <div class="big-text" onclick="playSound('${escJs(t.hz)}','${escJs(t.audio||'')}')" style="cursor:pointer;">
+          <div class="hz hanzi">${t.hz} <span class="listen-ico">🔊</span></div>
+          <div class="py">${t.py}</div>
+        </div>
+        <div class="big-img img-slot filled"><img src="${t.img}" alt="${escHtml(t.label)}" onerror="imgFallback(this,'${escJs(t.label)}')"></div>
+      </div>
+      <div class="tf-buttons">
+        <button class="tf-yes" onclick="checkTF(this,${t.correct},true,${i})">✅ Đúng</button>
+        <button class="tf-no" onclick="checkTF(this,${t.correct},false,${i})">❌ Sai</button>
+      </div>`;
+    tfList.appendChild(row);
+  });
+}
+function checkTF(btn, correctVal, chosen, idx){
+  const row = btn.closest('.tf-item');
+  const allBtns = row.querySelectorAll('.tf-buttons button');
+  allBtns.forEach(b=>{ b.disabled = true; b.onclick = null; });
+  if(chosen === correctVal){
+    btn.classList.add('right-pick');
+    addScore(10);
+  } else {
+    btn.classList.add('wrong-pick');
+    const correctBtn = row.querySelector(correctVal ? '.tf-yes' : '.tf-no');
+    if(correctBtn) correctBtn.classList.add('reveal-correct');
+  }
+  lessonProgress.tf.add(idx); updateLessonProgress();
+}
+renderTfList();
+
+/* ---------- TRÍ NHỚ — lật thẻ tìm cặp (dùng lại đúng 7 thẻ Từ mới, không cần thêm file) ---------- */
+let memoryCards = [], memoryFlipped = [], memoryMatchedCount = 0, memoryFlipsCount = 0, memoryLock = false;
+function buildMemoryCards(){
+  const cards = [];
+  greetingCards.forEach((c,i)=>{
+    cards.push({pairId:i, kind:'hz', text:c.hz, audio:c.audio});
+    cards.push({pairId:i, kind:'vn', text:c.vn});
+  });
+  return shuffle(cards);
+}
+function initMemoryGame(){
+  memoryCards = buildMemoryCards();
+  memoryFlipped = []; memoryMatchedCount = 0; memoryFlipsCount = 0; memoryLock = false;
+  const grid = document.getElementById('memoryGrid');
+  grid.innerHTML = memoryCards.map((c,i)=>`
+    <div class="memory-card" id="memCard-${i}" onclick="flipMemoryCard(${i})">
+      <div class="memory-card-inner">
+        <div class="memory-face memory-face-back">🦖</div>
+        <div class="memory-face memory-face-front">${c.kind==='hz' ? `<span class="m-hz hanzi">${c.text}</span>` : `<span class="m-vn">${escHtml(c.text)}</span>`}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('memoryPairsLabel').textContent = `Đã ghép: 0 / ${greetingCards.length} cặp`;
+  document.getElementById('memoryFlipsLabel').textContent = `Lượt lật: 0`;
+}
+function flipMemoryCard(i){
+  if(memoryLock) return;
+  const card = memoryCards[i];
+  const el = document.getElementById('memCard-'+i);
+  if(!el || el.classList.contains('flipped') || el.classList.contains('matched')) return;
+  el.classList.add('flipped');
+  if(card.kind==='hz'){ playSound(card.text, card.audio||''); }
+  memoryFlipped.push(i);
+  if(memoryFlipped.length === 2){
+    memoryFlipsCount++;
+    document.getElementById('memoryFlipsLabel').textContent = `Lượt lật: ${memoryFlipsCount}`;
+    memoryLock = true;
+    const [a,b] = memoryFlipped;
+    const ca = memoryCards[a], cb = memoryCards[b];
+    if(ca.pairId === cb.pairId){
+      setTimeout(()=>{
+        document.getElementById('memCard-'+a).classList.add('matched');
+        document.getElementById('memCard-'+b).classList.add('matched');
+        memoryMatchedCount++;
+        document.getElementById('memoryPairsLabel').textContent = `Đã ghép: ${memoryMatchedCount} / ${greetingCards.length} cặp`;
+        addScore(10);
+        memoryFlipped = []; memoryLock = false;
+        if(memoryMatchedCount >= greetingCards.length){ lessonProgress.memory = true; updateLessonProgress(); }
+      }, 550);
+    } else {
+      const elA = document.getElementById('memCard-'+a), elB = document.getElementById('memCard-'+b);
+      elA.classList.add('wrong-flash'); elB.classList.add('wrong-flash');
+      setTimeout(()=>{
+        elA.classList.remove('flipped','wrong-flash');
+        elB.classList.remove('flipped','wrong-flash');
+        memoryFlipped = []; memoryLock = false;
+      }, 900);
+    }
+  }
+}
+initMemoryGame();
+
+/* ---------- GHÉP ÂM THANH VỚI HÌNH (dùng lại 4 nhân vật ở phần "Đoán xem", không cần thêm file) ---------- */
+let audiomatchSelected = null, audiomatchMatched = 0, audiomatchLeftOrder = [], audiomatchRightOrder = [];
+function initAudioMatch(){
+  audiomatchSelected = null; audiomatchMatched = 0;
+  audiomatchLeftOrder = shuffle(numbers.map((_,i)=>i));
+  audiomatchRightOrder = shuffle(numbers.map((_,i)=>i));
+  const soundCol = document.getElementById('audiomatchSoundCol');
+  const imgCol = document.getElementById('audiomatchImgCol');
+  soundCol.innerHTML = audiomatchLeftOrder.map((pid,pos)=>`
+    <div class="match-item audiomatch-item" id="amSound-${pos}" data-pid="${pid}" onclick="pickAudiomatchSound(${pos})">
+      <span class="match-play-ico">🔊</span>
+      <span class="match-vn">Nghe #${pos+1}</span>
+    </div>`).join('');
+  imgCol.innerHTML = audiomatchRightOrder.map((pid,pos)=>{
+    const n = numbers[pid];
+    return `<div class="match-item" id="amImg-${pos}" data-pid="${pid}" onclick="pickAudiomatchImg(${pos})">
+      <div class="img-slot filled" style="width:100%;aspect-ratio:1/1;margin-bottom:6px;"><img src="${n.img}" alt="${escHtml(n.alt)}" onerror="imgFallback(this,'${escJs(n.alt)}')"></div>
+    </div>`;
+  }).join('');
+  document.getElementById('audiomatchProgress').textContent = `Đã ghép: 0 / ${numbers.length}`;
+  document.getElementById('audiomatchProgressFill').style.width = '0%';
+}
+function pickAudiomatchSound(pos){
+  const el = document.getElementById('amSound-'+pos);
+  if(!el || el.classList.contains('correct')) return;
+  document.querySelectorAll('.audiomatch-item').forEach(e=>e.classList.remove('playing'));
+  el.classList.add('playing');
+  audiomatchSelected = pos;
+  const pid = Number(el.dataset.pid);
+  playSound(numbers[pid].speak, numbers[pid].audio);
+}
+function pickAudiomatchImg(pos){
+  if(audiomatchSelected === null) return;
+  const soundEl = document.getElementById('amSound-'+audiomatchSelected);
+  const imgEl = document.getElementById('amImg-'+pos);
+  if(!imgEl || imgEl.classList.contains('correct')) return;
+  const soundPid = Number(soundEl.dataset.pid);
+  const imgPid = Number(imgEl.dataset.pid);
+  if(soundPid === imgPid){
+    soundEl.classList.remove('playing'); soundEl.classList.add('correct');
+    imgEl.classList.add('correct');
+    audiomatchMatched++;
+    addScore(15);
+    document.getElementById('audiomatchProgress').textContent = `Đã ghép: ${audiomatchMatched} / ${numbers.length}`;
+    document.getElementById('audiomatchProgressFill').style.width = (audiomatchMatched/numbers.length*100)+'%';
+    audiomatchSelected = null;
+    if(audiomatchMatched >= numbers.length){ lessonProgress.audiomatch = true; updateLessonProgress(); }
+  } else {
+    imgEl.classList.add('wrong');
+    soundEl.classList.add('wrong');
+    setTimeout(()=>{
+      imgEl.classList.remove('wrong'); soundEl.classList.remove('wrong','playing');
+      audiomatchSelected = null;
+    }, 700);
+  }
+}
+initAudioMatch();
+
+/* ---------- BẤM NHANH — đua tốc độ (45 giây, dùng lại đúng 7 thẻ Từ mới, không cần thêm file) ---------- */
+const SPEEDTAP_TIME = 45;
+let speedtapTimeLeft = SPEEDTAP_TIME, speedtapTimerInt = null, speedtapCorrect = 0, speedtapCombo = 0, speedtapRunning = false, speedtapTarget = null;
+function renderSpeedtapReady(){
+  clearInterval(speedtapTimerInt);
+  speedtapRunning = false;
+  document.getElementById('speedtapStage').innerHTML = `
+    <div class="quiz-card" style="text-align:center;">
+      <span class="quiz-badge">⚡ Bấm càng nhanh, càng nhiều điểm</span>
+      <p class="stem">Đọc gợi ý rồi bấm thật nhanh vào đúng ô chữ Hán trong ${SPEEDTAP_TIME} giây. Bấm đúng liên tiếp sẽ được cộng combo đó!</p>
+      <button type="button" class="ready-btn" onclick="startSpeedtap()">✅ Sẵn sàng</button>
+    </div>`;
+  document.getElementById('speedtapTimerLabel').textContent = `⏱ ${SPEEDTAP_TIME}s`;
+  document.getElementById('speedtapScoreLabel').textContent = `✅ Đúng: 0`;
+  document.getElementById('speedtapComboLabel').textContent = `🔥 0`;
+  const fill = document.getElementById('speedtapTimerFill');
+  fill.style.transition='none'; fill.style.width='100%'; fill.classList.remove('low');
+}
+function startSpeedtap(){
+  speedtapTimeLeft = SPEEDTAP_TIME; speedtapCorrect = 0; speedtapCombo = 0; speedtapRunning = true;
+  document.getElementById('speedtapScoreLabel').textContent = `✅ Đúng: 0`;
+  document.getElementById('speedtapComboLabel').textContent = `🔥 0`;
+  const fill = document.getElementById('speedtapTimerFill');
+  fill.classList.remove('low');
+  fill.style.transition = 'none'; fill.style.width = '100%';
+  void fill.offsetWidth;
+  fill.style.transition = `width ${SPEEDTAP_TIME}s linear`;
+  fill.style.width = '0%';
+  document.getElementById('speedtapTimerLabel').textContent = `⏱ ${speedtapTimeLeft}s`;
+  speedtapTimerInt = setInterval(()=>{
+    speedtapTimeLeft--;
+    if(speedtapTimeLeft<=8) fill.classList.add('low');
+    document.getElementById('speedtapTimerLabel').textContent = `⏱ ${Math.max(speedtapTimeLeft,0)}s`;
+    if(speedtapTimeLeft<=0){ endSpeedtap(); }
+  }, 1000);
+  nextSpeedtapRound();
+}
+function nextSpeedtapRound(){
+  if(!speedtapRunning) return;
+  const pool = shuffle(greetingCards.map((_,i)=>i));
+  speedtapTarget = pool[0];
+  const t = greetingCards[speedtapTarget];
+  const bubbles = shuffle(pool);
+  document.getElementById('speedtapStage').innerHTML = `
+    <div class="speedtap-target">Bấm vào chữ Hán có nghĩa là: <span style="color:var(--coral);">"${escHtml(t.vn)}"</span></div>
+    <div class="speedtap-grid">${bubbles.map(i=>`<button type="button" class="speedtap-bubble" data-i="${i}" onclick="tapSpeedtap(this,${i})"><span class="hanzi">${greetingCards[i].hz}</span></button>`).join('')}</div>`;
+}
+function tapSpeedtap(btn, i){
+  if(!speedtapRunning) return;
+  if(i === speedtapTarget){
+    btn.classList.add('tap-correct');
+    speedtapCorrect++; speedtapCombo++;
+    addScore(5 + Math.min(speedtapCombo,5));
+    document.getElementById('speedtapScoreLabel').textContent = `✅ Đúng: ${speedtapCorrect}`;
+    const comboLabel = document.getElementById('speedtapComboLabel');
+    comboLabel.textContent = `🔥 ${speedtapCombo}`;
+    comboLabel.classList.remove('combo-pulse'); void comboLabel.offsetWidth; comboLabel.classList.add('combo-pulse');
+    setTimeout(()=> nextSpeedtapRound(), 260);
+  } else {
+    btn.classList.add('tap-wrong');
+    speedtapCombo = 0;
+    document.getElementById('speedtapComboLabel').textContent = `🔥 0`;
+    setTimeout(()=> btn.classList.remove('tap-wrong'), 300);
+  }
+}
+function endSpeedtap(){
+  clearInterval(speedtapTimerInt);
+  speedtapRunning = false;
+  document.getElementById('speedtapTimerLabel').textContent = '🎉';
+  document.getElementById('speedtapStage').innerHTML = `
+    <div class="speedtap-done">
+      <div class="big-emoji" style="font-size:2.6rem;">⚡</div>
+      <h3>Hết giờ! Bé đã bấm đúng ${speedtapCorrect} lần.</h3>
+      <p style="font-size:14px;color:#8a8a9a;">Lượt sau tốc độ sẽ nhanh hơn nữa nhé!</p>
+      <button type="button" class="redo-btn" onclick="renderSpeedtapReady()">🔁 Chơi lượt mới</button>
+    </div>`;
+  lessonProgress.speedtap = true; updateLessonProgress();
+}
+
+/* ---------- QUIZ: đếm ngược, mỗi câu một thẻ, kho câu hỏi phong phú ---------- */
+const TIME_LIMIT = 20; // giây mỗi câu
+const ROUND_SIZE = 10; // mỗi lượt chơi 10 câu, rút ngẫu nhiên từ kho
+
+// Kho câu hỏi — mọi câu hỏi "chữ Hán nghĩa là gì" đều có audio (file thật hoặc giọng đọc dự phòng qua playSound).
+// Các hình ở dạng "Nhìn hình chọn từ" đều là những cảnh đã xuất hiện ở phần 1 (Từ mới) và phần 3 (Đoán xem).
+const QUIZ_POOL = [
+  {type:'text2vn', hz:'他', audio:'audio/ta.mp3', question:'nghĩa là gì?', opts:['Anh ấy, cậu ấy','Ai','Nước, quốc gia','Người'], correct:0},
+  {type:'text2vn', hz:'是', audio:'audio/shi.mp3', question:'nghĩa là gì?', opts:['Là, thì','Ai','Nào','Người'], correct:0},
+  {type:'text2vn', hz:'谁', audio:'audio/shei.mp3', question:'nghĩa là gì?', opts:['Ai','Là, thì','Nước, quốc gia','Người'], correct:0},
+  {type:'text2vn', hz:'哪', audio:'audio/na.mp3', question:'nghĩa là gì?', opts:['Nào','Ai','Là, thì','Nước, quốc gia'], correct:0},
+  {type:'text2vn', hz:'国', audio:'audio/guo.mp3', question:'nghĩa là gì?', opts:['Nước, quốc gia','Người','Ai','Là, thì'], correct:0},
+  {type:'text2vn', hz:'人', audio:'audio/ren.mp3', question:'nghĩa là gì?', opts:['Người','Nước, quốc gia','Ai','Nào'], correct:0},
+  {type:'text2vn', hz:'中国人', audio:'audio/zhongguoren.mp3', question:'nghĩa là gì?', opts:['Người Trung Quốc','Người Mỹ','Người Nhật Bản','Người Anh'], correct:0},
+
+  {type:'vn2text', vn:'Ai', question:'tiếng Trung nói thế nào?', opts:['谁','是','哪','人'], correct:0},
+  {type:'vn2text', vn:'Nào', question:'tiếng Trung nói thế nào?', opts:['哪','国','谁','是'], correct:0},
+  {type:'vn2text', vn:'Nước, quốc gia', question:'tiếng Trung nói thế nào?', opts:['国','人','是','哪'], correct:0},
+  {type:'vn2text', vn:'Người Trung Quốc', question:'tiếng Trung nói thế nào?', opts:['中国人','中国','国人','是中国'], correct:0},
+
+  {type:'audio', audio:'audio/ta.mp3', target:'他', question:'Bấm 🔊 rồi chọn đúng từ em vừa nghe.', opts:['他','是','谁','国'], correct:0},
+  {type:'audio', audio:'audio/shi.mp3', target:'是', question:'Bấm 🔊 rồi chọn đúng từ em vừa nghe.', opts:['是','他','哪','人'], correct:0},
+  {type:'audio', audio:'audio/shei.mp3', target:'谁', question:'Bấm 🔊 rồi chọn đúng từ em vừa nghe.', opts:['谁','人','国','是'], correct:0},
+  {type:'audio', audio:'audio/zhongguoren.mp3', target:'中国人', question:'Bấm 🔊 rồi chọn đúng từ em vừa nghe.', opts:['中国人','中国','国人','是人'], correct:0},
+
+  {type:'pinyin2vn', py:'Tā shì shéi?', hz:'他是谁？', audio:'audio/tashishei.mp3', question:'nghĩa là gì?', opts:['Anh ấy là ai?','Anh ấy là Thành Long.','Anh ấy là người nước nào?','Người Trung Quốc'], correct:0},
+  {type:'pinyin2vn', py:'Duōlā A Mèng shì nǎ guó rén?', hz:'哆啦A梦是哪国人？', audio:'audio/duolaamengnaguoren.mp3', question:'nghĩa là gì?', opts:['Doraemon là người nước nào?','Anh ấy là ai?','Anh ấy là Doraemon.','Người Nhật Bản'], correct:0},
+  {type:'pinyin2vn', py:'Zhōngguó rén', hz:'中国人', audio:'audio/zhongguoren.mp3', question:'nghĩa là gì?', opts:['Người Trung Quốc','Người Mỹ','Người Nhật Bản','Người Anh'], correct:0},
+
+  {type:'image2text', img:'lá cờ Trung Quốc bay trên nền bản đồ', imgSrc:'images/guo.png', question:'Nhìn hình, chọn từ tiếng Trung phù hợp.', opts:['国','人','是','谁'], correct:0},
+  {type:'image2text', img:'một nhóm người đứng cạnh nhau, đủ các quốc tịch', imgSrc:'images/ren.png', question:'Nhìn hình, chọn từ tiếng Trung phù hợp.', opts:['人','国','哪','是'], correct:0},
+  {type:'image2text', img:'bạn nhỏ chỉ vào bản đồ thế giới với nhiều lá cờ', imgSrc:'images/na.png', question:'Nhìn hình, chọn từ tiếng Trung phù hợp.', opts:['哪','谁','是','国'], correct:0},
+  {type:'image2text', img:'gia đình mặc trang phục truyền thống Trung Quốc, đứng trước Vạn Lý Trường Thành', imgSrc:'images/zhongguoren.png', question:'Nhìn hình, chọn từ tiếng Trung phù hợp.', opts:['中国人','中国','国人','是人'], correct:0},
+  {type:'image2text', img:'chuột điện Pikachu màu vàng', imgSrc:'images/pikachu.png', question:'Nhìn hình, đây là ai?', opts:['皮卡丘','米老鼠','哆啦A梦','蜘蛛侠'], correct:0},
+  {type:'image2text', img:'chuột Mickey', imgSrc:'images/mickey.png', question:'Nhìn hình, đây là ai?', opts:['米老鼠','皮卡丘','蜘蛛侠','哆啦A梦'], correct:0},
+  {type:'image2text', img:'mèo máy Doraemon màu xanh', imgSrc:'images/doraemon.png', question:'Nhìn hình, đây là ai?', opts:['哆啦A梦','米老鼠','皮卡丘','蜘蛛侠'], correct:0},
+  {type:'image2text', img:'siêu anh hùng Người Nhện mặc bộ đồ đỏ đen', imgSrc:'images/spiderman.png', question:'Nhìn hình, đây là ai?', opts:['蜘蛛侠','哆啦A梦','米老鼠','皮卡丘'], correct:0}
+];
+
+const badgeByType = {
+  text2vn:'📖 Đọc hiểu', vn2text:'🔤 Tìm chữ Hán', audio:'🎧 Nghe rồi chọn',
+  pinyin2vn:'🔊 Phiên âm', image2text:'🖼️ Nhìn hình chọn từ'
+};
+const hanziOptTypes = ['vn2text','audio','image2text'];
+let quizRound = [], quizIndex = 0, timerInterval = null, timerTimeout = null, quizCombo = 0, quizRemain = TIME_LIMIT;
+
+function buildRound(){
+  const picked = shuffle(QUIZ_POOL).slice(0, ROUND_SIZE);
+  return picked.map(q=>{
+    const order = shuffle(q.opts.map((_,i)=>i));
+    const newOpts = order.map(i=>q.opts[i]);
+    const newCorrect = order.indexOf(q.correct);
+    return Object.assign({}, q, {opts:newOpts, correct:newCorrect});
+  });
+}
+
+function stemFor(q){
+  switch(q.type){
+    case 'text2vn': return `<span class="hanzi">${q.hz}</span> ${q.question}`;
+    case 'vn2text': return `"${q.vn}" ${q.question}`;
+    case 'audio': return q.question;
+    case 'pinyin2vn': return `"${q.py}" ${q.question}`;
+    case 'image2text': return q.question;
+  }
+}
+
+function renderReadyCard(){
+  clearQuizTimers();
+  document.getElementById('quizStage').innerHTML = `
+    <div class="quiz-card" style="text-align:center;">
+      <span class="quiz-badge">⏱️ Đếm ngược trả lời nhanh</span>
+      <p class="stem">Mỗi câu có ${TIME_LIMIT} giây để suy nghĩ, 10 câu ngẫu nhiên mỗi lượt.<br>Bé đã sẵn sàng chưa?</p>
+      <button type="button" class="ready-btn" onclick="beginQuiz()">✅ Sẵn sàng</button>
+    </div>`;
+  document.getElementById('quizCurrentNum').textContent = '–';
+  document.getElementById('quizProgressFill').style.width = '0%';
+  document.getElementById('quizTimerLabel').textContent = `⏱ ${TIME_LIMIT}s`;
+  const fill = document.getElementById('timerFill');
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+  fill.classList.remove('low');
+}
+
+function beginQuiz(){
+  quizRound = buildRound();
+  quizIndex = 0;
+  quizCombo = 0;
+  const comboLabel = document.getElementById('quizComboLabel');
+  if(comboLabel) comboLabel.textContent = '🔥 0';
+  renderQuizCard(0);
+}
+
+function renderQuizCard(qi){
+  const q = quizRound[qi];
+  const stage = document.getElementById('quizStage');
+  const useHanziOpts = hanziOptTypes.includes(q.type);
+  let mediaHtml = '';
+  let listenBtn = '';
+  if(q.type==='image2text'){
+    mediaHtml = `<div class="img-slot quiz-img-slot filled"><img src="${q.imgSrc}" alt="${escHtml(q.img)}" onerror="imgFallback(this,'${escJs(q.img)}')"></div>`;
+  } else if(q.type==='audio'){
+    listenBtn = `<button type="button" class="quiz-listen-btn" onclick="playSound('${escJs(q.target)}','${escJs(q.audio||'')}')">🔊 Nghe từ</button>`;
+  } else if(q.type==='text2vn'){
+    listenBtn = `<button type="button" class="quiz-listen-btn" onclick="playSound('${escJs(q.hz)}','${escJs(q.audio||'')}')">🔊 Nghe</button>`;
+  } else if(q.type==='pinyin2vn'){
+    listenBtn = `<button type="button" class="quiz-listen-btn" onclick="playSound('${escJs(q.hz)}','${escJs(q.audio||'')}')">🔊 Nghe</button>`;
+  }
+  const optsHtml = q.opts.map((o,oi)=>`<button type="button" class="opt-btn" data-oi="${oi}" onclick="answerQuiz(this,${oi})">${useHanziOpts?`<span class="hanzi">${o}</span>`:o}</button>`).join('');
+  stage.innerHTML = `<div class="quiz-card">
+      <span class="quiz-badge">${badgeByType[q.type]}</span>
+      <p class="stem">${qi+1}. ${stemFor(q)}</p>
+      ${mediaHtml}
+      ${listenBtn}
+      <div class="quiz-opts">${optsHtml}</div>
+    </div>`;
+  document.getElementById('quizCurrentNum').textContent = qi+1;
+  document.getElementById('quizProgressFill').style.width = (qi/quizRound.length*100)+'%';
+  startTimer();
+}
+
+function startTimer(){
+  clearQuizTimers();
+  const fill = document.getElementById('timerFill');
+  const label = document.getElementById('quizTimerLabel');
+  fill.classList.remove('low');
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+  void fill.offsetWidth; // ép trình duyệt vẽ lại trước khi chạy transition
+  fill.style.transition = `width ${TIME_LIMIT}s linear`;
+  fill.style.width = '0%';
+  let remain = TIME_LIMIT;
+  quizRemain = remain;
+  label.textContent = `⏱ ${remain}s`;
+  timerInterval = setInterval(()=>{
+    remain--;
+    quizRemain = remain;
+    if(remain<=5) fill.classList.add('low');
+    label.textContent = `⏱ ${Math.max(remain,0)}s`;
+    if(remain<=0) clearInterval(timerInterval);
+  },1000);
+  timerTimeout = setTimeout(()=>{ answerQuiz(null,-1); }, TIME_LIMIT*1000);
+}
+function clearQuizTimers(){
+  if(timerInterval) clearInterval(timerInterval);
+  if(timerTimeout) clearTimeout(timerTimeout);
+}
+
+function answerQuiz(btn, oi){
+  clearQuizTimers();
+  const stage = document.getElementById('quizStage');
+  const buttons = stage.querySelectorAll('.opt-btn');
+  buttons.forEach(b=>b.onclick=null);
+  const correct = quizRound[quizIndex].correct;
+  buttons[correct].classList.add('correct');
+  const comboLabel = document.getElementById('quizComboLabel');
+  if(oi === correct){
+    quizCombo++;
+    const bonus = Math.max(0, Math.round(quizRemain/TIME_LIMIT*5));
+    addScore(10 + bonus);
+    if(comboLabel){
+      comboLabel.textContent = `🔥 ${quizCombo}`;
+      comboLabel.classList.remove('combo-pulse'); void comboLabel.offsetWidth; comboLabel.classList.add('combo-pulse');
+    }
+  } else {
+    quizCombo = 0;
+    if(comboLabel) comboLabel.textContent = '🔥 0';
+    if(btn){ btn.classList.add('wrong'); }
+  }
+  document.getElementById('timerFill').style.transition = 'none';
+  setTimeout(()=>{
+    quizIndex++;
+    if(quizIndex >= quizRound.length){ finishQuiz(); }
+    else { renderQuizCard(quizIndex); }
+  }, 1300);
+}
+
+function finishQuiz(){
+  document.getElementById('quizProgressFill').style.width = '100%';
+  document.getElementById('quizCurrentNum').textContent = quizRound.length;
+  document.getElementById('quizTimerLabel').textContent = '🎉';
+  document.getElementById('timerFill').style.transition = 'none';
+  document.getElementById('timerFill').style.width = '100%';
+  document.getElementById('timerFill').classList.remove('low');
+  document.getElementById('quizStage').innerHTML = `
+    <div class="quiz-done-card">
+      <div class="big-emoji">🎉</div>
+      <h3>Bé đã hoàn thành cả 10 câu!</h3>
+      <p style="font-size:14px;color:#8a8a9a;">Lượt sau sẽ có bộ câu hỏi khác đấy — thử lại nhé!</p>
+      <button type="button" class="redo-btn" onclick="renderReadyCard()">🔁 Chơi lượt mới</button>
+    </div>`;
+  lessonProgress.quiz = true; updateLessonProgress();
+}
+
+renderReadyCard();
+renderSpeedtapReady();
+
+</script>
+
+</body>
+</html>
